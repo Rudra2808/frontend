@@ -1,92 +1,193 @@
-import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link, useNavigate, Navigate } from 'react-router-dom';
+"use client"
 
-import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
-import ViewProperties from './components/ViewProperties';
-import AddProperty from './components/AddProperty';
-import PrivateRoute from './components/PrivateRoute';
-import LogoutConfirmModal from './components/LogoutConfirmModal';
-import AppHeader from './components/AppHeader';
-import Settings from './components/Settings';
-import AdminPage from './components/AdminPage';
-import WishlistPage from './components/WishlistPage';
-import PropertyDetails from './components/PropertyDetails';
-import PricePredictor from "./components/PricePredictor"; // ✅ Import Predictor
-import RentPredictor from './components/RentPredictor';
+import { useState, useEffect } from "react"
+import { Routes, Route, Link, useNavigate, Navigate } from "react-router-dom"
+
+import LoginForm from "./components/LoginForm"
+import RegisterForm from "./components/RegisterForm"
+import ViewProperties from "./components/ViewProperties"
+import AddProperty from "./components/AddProperty"
+import PrivateRoute from "./components/PrivateRoute"
+import LogoutConfirmModal from "./components/LogoutConfirmModal"
+import AppHeader from "./components/AppHeader"
+import Settings from "./components/Settings"
+import AdminPage from "./components/AdminPage"
+import WishlistPage from "./components/WishlistPage"
+import PropertyDetails from "./components/PropertyDetails"
+import PricePredictor from "./components/PricePredictor" // ✅ Import Predictor
+import RentPredictor from "./components/RentPredictor"
+
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem('loggedInUser'));
-  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem("loggedInUser"))
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
   const [userData, setUserData] = useState({
-    first_name: '',
-    last_name: '',
-    email: ''
-  });
-  const navigate = useNavigate();
+    first_name: "",
+    last_name: "",
+    email: "",
+  })
+  const navigate = useNavigate()
 
   useEffect(() => {
     const storedUser = {
-      first_name: localStorage.getItem('first_name'),
-      last_name: localStorage.getItem('last_name'),
-      email: localStorage.getItem('email'),
-      username: localStorage.getItem('loggedInUser'), 
-    };
-    setUserData(storedUser);
-  }, [loggedInUser]);
+      first_name: localStorage.getItem("first_name"),
+      last_name: localStorage.getItem("last_name"),
+      email: localStorage.getItem("email"),
+      username: localStorage.getItem("loggedInUser"),
+    }
+    setUserData(storedUser)
+  }, [loggedInUser])
 
   const handleLogoutConfirm = () => {
-    localStorage.clear();
-    setLoggedInUser(null);
-    setUserData(null);
-    setShowLogoutConfirm(false);
-    navigate('/');
-  };
+    localStorage.clear()
+    setLoggedInUser(null)
+    setUserData(null)
+    setShowLogoutConfirm(false)
+    navigate("/")
+  }
 
-  const role = localStorage.getItem('userRole'); // seller or buyer
+  const role = localStorage.getItem("userRole") // seller or buyer
   console.log(role)
   return (
-    <div className="p-4 relative min-h-screen bg-gray-100">
-      {/* Top Header */}
-      {role === 'seller' && (
-        <Link to="/addproperty">Add Property</Link>
-      )}
-      {role === 'seller' && (
-        <Link to="/admin" className="text-blue-600">Admin Panel</Link>
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      {loggedInUser && role === "seller" && (
+        <div className="fixed top-20 right-6 z-40 flex flex-col gap-3">
+          <Link
+            to="/addproperty"
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-medium flex items-center gap-2"
+          >
+            <span className="text-lg">+</span>
+            Add Property
+          </Link>
+          <Link
+            to="/admin"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-medium flex items-center gap-2"
+          >
+            <span className="text-lg">⚙</span>
+            Admin Panel
+          </Link>
+        </div>
       )}
 
-      <AppHeader
-        loggedInUser={loggedInUser}
-        userData={userData}
-        handleLogout={() => setShowLogoutConfirm(true)}
-      />
+      <AppHeader loggedInUser={loggedInUser} userData={userData} handleLogout={() => setShowLogoutConfirm(true)} />
 
-      {/* Logout Modal */}
       <LogoutConfirmModal
         show={showLogoutConfirm}
         onCancel={() => setShowLogoutConfirm(false)}
         onConfirm={handleLogoutConfirm}
       />
 
-      {/* Routes */}
-      <Routes>
-        <Route path="/" element={<div className="text-center">Welcome to the Real Estate App!</div>} />
-        <Route path="/login" element={<LoginForm setLoggedInUser={setLoggedInUser} />} />
-        <Route path="/registration" element={<RegisterForm />} />
-        <Route path="/viewproperties" element={<PrivateRoute><ViewProperties /></PrivateRoute>} />
-        <Route path="/addproperty" element={loggedInUser && role === 'seller' ? (<PrivateRoute><AddProperty listedBy={loggedInUser} /></PrivateRoute>) : (<Navigate to="/" />)} />
-        <Route path="/settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-        <Route path="/admin" element={loggedInUser && role === 'seller' ? (<PrivateRoute><AdminPage username={loggedInUser} /></PrivateRoute>) : (<Navigate to="/" />)} />
-        <Route path="/property/:id" element={<PrivateRoute><PropertyDetails /></PrivateRoute>} />
-        <Route path="/wishlist" element={<PrivateRoute><WishlistPage /></PrivateRoute>} />
-
-        {/* ✅ New Price Predictor Route */}
-        <Route path="/predict-price" element={<PrivateRoute><PricePredictor /></PrivateRoute>} />
-        <Route path="/rent-price" element={<PrivateRoute><RentPredictor /></PrivateRoute>} />
-
-        <Route path="*" element={<div className="text-center">404 - Page Not Found</div>} />
-      </Routes>
+      <main className="container mx-auto px-4 py-8">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="text-center py-20">
+                <div className="max-w-4xl mx-auto">
+                  <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6 animate-fade-in">
+                    Welcome to Real Estate Pro
+                  </h1>
+                  <p className="text-xl text-gray-600 mb-8 animate-slide-up">
+                    Discover your dream property with our advanced search and prediction tools
+                  </p>
+                  {!loggedInUser && (
+                    <div className="flex gap-4 justify-center animate-slide-up">
+                      <Link
+                        to="/login"
+                        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+                      >
+                        Get Started
+                      </Link>
+                      <Link
+                        to="/viewproperties"
+                        className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300"
+                      >
+                        Browse Properties
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            }
+          />
+          <Route path="/login" element={<LoginForm setLoggedInUser={setLoggedInUser} />} />
+          <Route path="/registration" element={<RegisterForm />} />
+          <Route
+            path="/viewproperties"
+            element={
+              <PrivateRoute>
+                <ViewProperties />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/addproperty"
+            element={
+              loggedInUser && role === "seller" ? (
+                <PrivateRoute>
+                  <AddProperty listedBy={loggedInUser} />
+                </PrivateRoute>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <PrivateRoute>
+                <Settings />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              loggedInUser && role === "seller" ? (
+                <PrivateRoute>
+                  <AdminPage username={loggedInUser} />
+                </PrivateRoute>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/property/:id"
+            element={
+              <PrivateRoute>
+                <PropertyDetails />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <PrivateRoute>
+                <WishlistPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/predict-price"
+            element={
+              <PrivateRoute>
+                <PricePredictor />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/rent-price"
+            element={
+              <PrivateRoute>
+                <RentPredictor />
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<div className="text-center">404 - Page Not Found</div>} />
+        </Routes>
+      </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

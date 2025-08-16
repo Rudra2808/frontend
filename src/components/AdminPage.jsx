@@ -12,8 +12,8 @@ const AdminPage = ({ username }) => {
       setIsLoading(true)
       try {
         const [propertiesRes, callbacksRes] = await Promise.all([
-          fetch(`https://backend-1-x1gx.onrender.com//api/properties/seller/${username}/`),
-          fetch(`https://backend-1-x1gx.onrender.com//api/callbacks/seller/${username}/`),
+          fetch(`http://localhost:8000//api/properties/seller/${username}/`),
+          fetch(`http://localhost:8000//api/callbacks/seller/${username}/`),
         ])
 
         if (propertiesRes.ok) {

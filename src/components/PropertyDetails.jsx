@@ -16,7 +16,7 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://backend-1-x1gx.onrender.com//api/properties/${id}/`)
+      .get(`http://localhost:8000//api/properties/${id}/`)
       .then((res) => setProperty(res.data))
       .catch((err) => console.error(err))
   }, [id])
@@ -31,7 +31,7 @@ const PropertyDetails = () => {
       return
     }
     try {
-      await axios.post("https://backend-1-x1gx.onrender.com//api/callback/", {
+      await axios.post("http://localhost:8000//api/callback/", {
         buyer_name: callbackForm.buyer_name,
         email_id: callbackForm.email_id,
         phone_no: callbackForm.phone_no,
@@ -184,6 +184,15 @@ const PropertyDetails = () => {
                 </div>
               </div>
             </div>
+                  
+
+
+
+
+                  
+
+
+
 
             {property.url && (
               <div className="mt-8">
@@ -243,7 +252,7 @@ const PropertyDetails = () => {
                 />
               </div>
             </div>
-
+          
             <div className="flex justify-center space-x-4 mt-8">
               <button
                 onClick={() => setShowModal(false)}

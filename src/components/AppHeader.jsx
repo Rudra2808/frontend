@@ -19,13 +19,13 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
             <div className="flex gap-3">
               <a
                 href="/login"
-                className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-300 px-4 py-2 rounded-lg hover:bg-blue-50"
+                className="text-gray-700 no-underline hover:text-blue-600 font-medium transition-colors duration-300 px-4 py-2 rounded-lg hover:bg-blue-50"
               >
                 Login
               </a>
               <a
                 href="/registration"
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+                className="bg-gradient-to-r no-underline from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300"
               >
                 Register
               </a>
@@ -59,7 +59,7 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
                 <>
                   {/* Backdrop */}
                   <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
-                  <div className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-md border border-gray-200/50 rounded-2xl shadow-2xl z-50 animate-slide-down">
+<div className="absolute right-0 mt-2 w-72 bg-white border border-gray-200/50 rounded-2xl shadow-2xl z-50 animate-slide-down">
                     {/* User Info Section */}
                     <div className="p-6 border-b border-gray-100">
                       <div className="flex items-center gap-4">
@@ -80,21 +80,21 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
                     <div className="p-2">
                       <a
                         href="/settings"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100/80 rounded-xl text-gray-700 transition-all duration-300 group"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100/80 rounded-xl no-underline text-gray-700 transition-all duration-300 group"
                       >
                         <span className="text-lg group-hover:scale-110 transition-transform duration-300">⚙️</span>
                         <span className="font-medium">Settings</span>
                       </a>
                       <a
                         href="/viewproperties"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100/80 rounded-xl text-gray-700 transition-all duration-300 group"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100/80 rounded-xl no-underline text-gray-700 transition-all duration-300 group"
                       >
                         <span className="text-lg group-hover:scale-110 transition-transform duration-300">🏠</span>
                         <span className="font-medium">Browse Properties</span>
                       </a>
                       <a
                         href="/predict-price"
-                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100/80 rounded-xl text-gray-700 transition-all duration-300 group"
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100/80 rounded-xl no-underline text-gray-700 transition-all duration-300 group"
                       >
                         <span className="text-lg group-hover:scale-110 transition-transform duration-300">📊</span>
                         <span className="font-medium">Price Predictor</span>

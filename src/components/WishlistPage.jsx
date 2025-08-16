@@ -11,7 +11,7 @@ const WishlistPage = () => {
   useEffect(() => {
     setIsLoading(true)
     axios
-      .get(`https://backend-1-x1gx.onrender.com//api/wishlist/?username=${localStorage.getItem("username")}`)
+      .get(`http://localhost:8000//api/wishlist/?username=${localStorage.getItem("username")}`)
       .then((res) => {
         setWishlist(res.data)
         setIsLoading(false)
@@ -24,7 +24,7 @@ const WishlistPage = () => {
 
   const removeFromWishlist = (itemId) => {
     axios
-      .delete(`https://backend-1-x1gx.onrender.com//api/wishlist/remove/${itemId}/`)
+      .delete(`http://localhost:8000//api/wishlist/remove/${itemId}/`)
       .then(() => {
         setWishlist(wishlist.filter((item) => item.id !== itemId))
       })

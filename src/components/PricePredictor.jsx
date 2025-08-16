@@ -41,7 +41,7 @@ export default function PricePredictor() {
   const handlePredict = async () => {
     setIsLoading(true)
     try {
-      const res = await axios.post("https://backend-1-x1gx.onrender.com//api/predict-price/", {
+      const res = await axios.post("http://localhost:8000//api/predict-price/", {
         ...formData,
         latitude: Number.parseFloat(formData.latitude),
         longitude: Number.parseFloat(formData.longitude),

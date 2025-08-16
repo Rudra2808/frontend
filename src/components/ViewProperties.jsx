@@ -16,7 +16,7 @@ const ViewProperties = () => {
 
   const addToWishlist = (propertyId) => {
     axios
-      .post("https://backend-1-x1gx.onrender.com//api/wishlist/add/", {
+      .post("http://localhost:8000//api/wishlist/add/", {
         username: localStorage.getItem("username"),
         property_id: propertyId,
       })
@@ -27,7 +27,7 @@ const ViewProperties = () => {
   useEffect(() => {
     setIsLoading(true)
     axios
-      .get("https://backend-1-x1gx.onrender.com//api/properties/")
+      .get("http://localhost:8000//api/properties/")
       .then((response) => {
         setProperties(response.data)
         setFiltered(response.data)

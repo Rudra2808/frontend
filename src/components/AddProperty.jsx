@@ -57,7 +57,7 @@ const AddPropertyForm = ({ listedBy }) => {
     data.append("listed_by", listedBy)
 
     try {
-      await axios.post("https://backend-1-x1gx.onrender.com//api/properties/", data, {
+      await axios.post("http://localhost:8000//api/properties/", data, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       alert("Property added successfully!")

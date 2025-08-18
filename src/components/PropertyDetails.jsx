@@ -16,7 +16,7 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://backend-1-x1gx.onrender.com//api/properties/${id}/`)
+      .get(`https://back1-i39m.onrender.com//api/properties/${id}/`)
       .then((res) => setProperty(res.data))
       .catch((err) => console.error(err))
   }, [id])
@@ -31,7 +31,7 @@ const PropertyDetails = () => {
       return
     }
     try {
-      await axios.post("https://backend-1-x1gx.onrender.com//api/callback/", {
+      await axios.post("https://back1-i39m.onrender.com//api/callback/", {
         buyer_name: callbackForm.buyer_name,
         email_id: callbackForm.email_id,
         phone_no: callbackForm.phone_no,

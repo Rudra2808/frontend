@@ -11,7 +11,7 @@ const WishlistPage = () => {
   useEffect(() => {
     setIsLoading(true)
     axios
-      .get(`https://backend-1-x1gx.onrender.com//api/wishlist/?username=${localStorage.getItem("username")}`)
+      .get(`https://back1-i39m.onrender.com//api/wishlist/?username=${localStorage.getItem("username")}`)
       .then((res) => {
         setWishlist(res.data)
         setIsLoading(false)
@@ -24,7 +24,7 @@ const WishlistPage = () => {
 
   const removeFromWishlist = (itemId) => {
     axios
-      .delete(`https://backend-1-x1gx.onrender.com//api/wishlist/remove/${itemId}/`)
+      .delete(`https://back1-i39m.onrender.com//api/wishlist/remove/${itemId}/`)
       .then(() => {
         setWishlist(wishlist.filter((item) => item.id !== itemId))
       })
@@ -96,7 +96,7 @@ const WishlistPage = () => {
                     
                     {item.image ? (
                       <img
-                        src={`https://backend-1-x1gx.onrender.com/${item.image}`|| "/placeholder.svg"}
+                        src={`https://back1-i39m.onrender.com/${item.image}`|| "/placeholder.svg"}
                         alt={item.image}
                         className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
                       />

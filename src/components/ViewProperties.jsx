@@ -18,8 +18,8 @@ const [wishlist, setWishlist] = useState([])
 useEffect(() => {
   setIsLoading(true)
   Promise.all([
-    axios.get("https://backend-1-x1gx.onrender.com/api/properties/"),
-    axios.get(`https://backend-1-x1gx.onrender.com/api/wishlist/?username=${localStorage.getItem("username")}`)
+    axios.get("https://back1-i39m.onrender.com/api/properties/"),
+    axios.get(`https://back1-i39m.onrender.com/api/wishlist/?username=${localStorage.getItem("username")}`)
   ])
     .then(([propertiesRes, wishlistRes]) => {
       setProperties(propertiesRes.data)
@@ -47,7 +47,7 @@ setWishlist(wishlistIds);
 
 
   const addToWishlist = (propertyId) => {
-  axios.post("https://backend-1-x1gx.onrender.com/api/wishlist/add/", {
+  axios.post("https://back1-i39m.onrender.com/api/wishlist/add/", {
     username: localStorage.getItem("username"),
     property_id: propertyId,
   })
@@ -57,7 +57,7 @@ setWishlist(wishlistIds);
 
 
 const removeFromWishlist = (propertyId) => {
-  axios.delete(`https://backend-1-x1gx.onrender.com/api/wishlist/remove/${propertyId}/`, {
+  axios.delete(`https://back1-i39m.onrender.com/api/wishlist/remove/${propertyId}/`, {
     data: { username: localStorage.getItem("username") }
   })
   .then(() => setWishlist((prev) => prev.filter((id) => id !== propertyId)))
@@ -69,7 +69,7 @@ const removeFromWishlist = (propertyId) => {
   // useEffect(() => {
   //   setIsLoading(true)
   //   axios
-  //     .get("https://backend-1-x1gx.onrender.com//api/properties/")
+  //     .get("https://back1-i39m.onrender.com//api/properties/")
   //     .then((response) => {
   //       setProperties(response.data)
   //       setFiltered(response.data.filter(p => p.is_available)) // Only available properties

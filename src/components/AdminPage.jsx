@@ -9,7 +9,7 @@ const AdminPage = ({ username }) => {
   const [rentals, setRentals] = useState([])
   const handleRemoveRental = async (id) => {
   try {
-    const res = await fetch(`https://backend-1-x1gx.onrender.com/api/rentals/${id}/remove/`, {
+    const res = await fetch(`https://back1-i39m.onrender.com/api/rentals/${id}/remove/`, {
       method: "DELETE",
     });
 
@@ -30,7 +30,7 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
   formData.append("agreement", file)
 
   try {
-    const res = await fetch(`https://backend-1-x1gx.onrender.com/api/properties/${id}/mark-as-rented/`, {
+    const res = await fetch(`https://back1-i39m.onrender.com/api/properties/${id}/mark-as-rented/`, {
       method: "POST",
       body: formData,
     })
@@ -54,7 +54,7 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
   // ✅ Mark inquiry as called
   const handleMarkCalled = async (id) => {
     try {
-      const res = await fetch(`https://backend-1-x1gx.onrender.com/api/callbacks/${id}/mark-called/`, {
+      const res = await fetch(`https://back1-i39m.onrender.com/api/callbacks/${id}/mark-called/`, {
         method: "POST",
       })
 
@@ -72,7 +72,7 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
   // ✅ Remove property (set is_available = false)
   const handleRemoveProperty = async (id) => {
     try {
-      const res = await fetch(`https://backend-1-x1gx.onrender.com/api/properties/${id}/remove/`, {
+      const res = await fetch(`https://back1-i39m.onrender.com/api/properties/${id}/remove/`, {
         method: "POST",
       })
 
@@ -93,9 +93,9 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
       setIsLoading(true)
       try {
         const [propertiesRes, callbacksRes, rentalsRes] = await Promise.all([
-  fetch(`https://backend-1-x1gx.onrender.com/api/properties/seller/${username}/`),
-  fetch(`https://backend-1-x1gx.onrender.com/api/callbacks/seller/${username}/`),
-  fetch(`https://backend-1-x1gx.onrender.com/api/rentals/seller/${username}/`)
+  fetch(`https://back1-i39m.onrender.com/api/properties/seller/${username}/`),
+  fetch(`https://back1-i39m.onrender.com/api/callbacks/seller/${username}/`),
+  fetch(`https://back1-i39m.onrender.com/api/rentals/seller/${username}/`)
 ])
 
 if (rentalsRes.ok) {

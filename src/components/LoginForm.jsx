@@ -16,7 +16,7 @@ const LoginForm = ({ setLoggedInUser }) => {
     setIsLoading(true)
 
     try {
-      const res = await axios.post("https://backend-1-x1gx.onrender.com/api/login/", { username, password })
+      const res = await axios.post("http://localhost:8000/api/login/", { username, password })
 
       localStorage.setItem("username", res.data.username)
       localStorage.setItem("loggedInUser", res.data.username)

@@ -16,7 +16,12 @@ import WishlistPage from "./components/WishlistPage"
 import PropertyDetails from "./components/PropertyDetails"
 import PricePredictor from "./components/PricePredictor" // ✅ Import Predictor
 import RentPredictor from "./components/RentPredictor"
-
+import PropertiesPage from "./components/PropertiesPage"
+import Aboutus from "./components/Aboutus"
+import Contect from "./components/Contect"
+import UserList from "./components/UserList"
+import Agreement from "./components/Agreement"
+import Footer from "./components/Footer"
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem("loggedInUser"))
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
@@ -49,25 +54,7 @@ function App() {
   console.log(role)
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      {loggedInUser && role === "seller" && (
-        <div className="fixed top-20 right-6 z-40 flex flex-col gap-3">
-          <Link
-            to="/addproperty"
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-medium flex items-center gap-2"
-          >
-            <span className="text-lg">+</span>
-            Add Property
-          </Link>
-          <Link
-            to="/admin"
-            className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm font-medium flex items-center gap-2"
-          >
-            <span className="text-lg">⚙</span>
-            Admin Panel
-          </Link>
-        </div>
-      )}
-
+    
       <AppHeader loggedInUser={loggedInUser} userData={userData} handleLogout={() => setShowLogoutConfirm(true)} />
 
       <LogoutConfirmModal
@@ -109,8 +96,30 @@ function App() {
               </div>
             }
           />
-          <Route path="/login" element={<LoginForm setLoggedInUser={setLoggedInUser} />} />
-          <Route path="/registration" element={<RegisterForm />} />
+          <Route
+  path="/login"
+  element={
+    loggedInUser ? (
+      <Navigate to="/" replace />
+    ) : (
+      <LoginForm setLoggedInUser={setLoggedInUser} />
+    )
+  }
+/>
+
+<Route
+  path="/registration"
+  element={
+    loggedInUser ? (
+      <Navigate to="/" replace />
+    ) : (
+      <RegisterForm />
+    )
+  }
+/>
+
+          <Route path="/prop" element={<PropertiesPage />} />
+
           <Route
             path="/viewproperties"
             element={
@@ -184,8 +193,13 @@ function App() {
             }
           />
           <Route path="*" element={<div className="text-center">404 - Page Not Found</div>} />
+          <Route path="/about" element={<Aboutus/>} />
+          <Route path="/contact" element={<Contect/>} />
+          <Route path="/userlist" element={<UserList/>} />
+          <Route path="/aggrement" element={<Agreement/>} />
         </Routes>
       </main>
+      <Footer/>
     </div>
   )
 }

@@ -13,41 +13,85 @@ const ViewProperties = () => {
     property_type: "",
     is_rental: "",
   })
+const [wishlist, setWishlist] = useState([])
+
+useEffect(() => {
+  setIsLoading(true)
+  Promise.all([
+    axios.get("http://localhost:8000/api/properties/"),
+    axios.get(`http://localhost:8000/api/wishlist/?username=${localStorage.getItem("username")}`)
+  ])
+    .then(([propertiesRes, wishlistRes]) => {
+      setProperties(propertiesRes.data)
+      setFiltered(propertiesRes.data.filter((p) => p.is_available)) 
+
+      // ✅ Only use property_id (no fallback needed)
+     const wishlistIds = wishlistRes.data.map(item => Number(item.id));
+setWishlist(wishlistIds);
+
+
+      console.log("Extracted wishlist IDs:", wishlistIds)
+      console.log("Wishlist API response:", wishlistRes.data)
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error)
+    })
+    .finally(() => {
+      setIsLoading(false)
+    })
+}, [])
+
+// useEffect(() => {
+//   console.log("Wishlist state updated:", wishlist)
+// }, [wishlist])
+
 
   const addToWishlist = (propertyId) => {
-    axios
-      .post("https://backend-1-x1gx.onrender.com//api/wishlist/add/", {
-        username: localStorage.getItem("username"),
-        property_id: propertyId,
-      })
-      .then((res) => alert(res.data.message))
-      .catch((err) => console.error(err))
-  }
+  axios.post("http://localhost:8000/api/wishlist/add/", {
+    username: localStorage.getItem("username"),
+    property_id: propertyId,
+  })
+  .then(() => setWishlist((prev) => [...prev, propertyId]))
+  .catch(() => alert('already in wish list'))
+}
+
+
+const removeFromWishlist = (propertyId) => {
+  axios.delete(`http://localhost:8000/api/wishlist/remove/${propertyId}/`, {
+    data: { username: localStorage.getItem("username") }
+  })
+  .then(() => setWishlist((prev) => prev.filter((id) => id !== propertyId)))
+  .catch((err) => console.error(err))
+}
+
+
+
+  // useEffect(() => {
+  //   setIsLoading(true)
+  //   axios
+  //     .get("http://localhost:8000//api/properties/")
+  //     .then((response) => {
+  //       setProperties(response.data)
+  //       setFiltered(response.data.filter(p => p.is_available)) // Only available properties
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching properties:", error)
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false)
+  //     })
+  // }, [])
 
   useEffect(() => {
-    setIsLoading(true)
-    axios
-      .get("https://backend-1-x1gx.onrender.com//api/properties/")
-      .then((response) => {
-        setProperties(response.data)
-        setFiltered(response.data)
+    const filteredData = properties
+      .filter(p => p.is_available) // Only available properties
+      .filter((p) => {
+        return (
+          (filters.city ? p.city.toLowerCase().includes(filters.city.toLowerCase()) : true) &&
+          (filters.property_type ? p.property_type === filters.property_type : true) &&
+          (filters.is_rental !== "" ? p.is_rental === (filters.is_rental === "true") : true)
+        )
       })
-      .catch((error) => {
-        console.error("Error fetching properties:", error)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
-  }, [])
-
-  useEffect(() => {
-    const filteredData = properties.filter((p) => {
-      return (
-        (filters.city ? p.city.toLowerCase().includes(filters.city.toLowerCase()) : true) &&
-        (filters.property_type ? p.property_type === filters.property_type : true) &&
-        (filters.is_rental !== "" ? p.is_rental === (filters.is_rental === "true") : true)
-      )
-    })
     setFiltered(filteredData)
   }, [filters, properties])
 
@@ -184,20 +228,32 @@ const ViewProperties = () => {
                   </div>
 
                   <div className="flex gap-3">
-                    <button
-                      onClick={() => addToWishlist(property.id)}
-                      className="flex-1 bg-gradient-to-r from-pink-500 to-rose-600 text-white px-4 py-3 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
-                    >
-                      <span className="text-lg">❤️</span>
-                      Wishlist
-                    </button>
-                    <Link to={`/property/${property.id}`} className="flex-1">
-                      <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
-                        <span className="text-lg">{property.is_rental ? "🏠" : "👁️"}</span>
-                        {property.is_rental ? "Book Now" : "View Details"}
-                      </button>
-                    </Link>
-                  </div>
+                      
+{wishlist.includes(property.id) ? (
+  <>
+    {console.log("properties", property.id)}
+    <button onClick={() => removeFromWishlist(property.id)}>💔 Remove</button>
+  </>
+) : (
+  <button onClick={() => addToWishlist(property.id)}>❤️ Wishlist</button>
+)}
+
+
+
+
+
+
+
+
+  <Link to={`/property/${property.id}`} className="flex-1">
+    <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
+      <span className="text-lg">{property.is_rental ? "🏠" : "👁️"}</span>
+      {property.is_rental ? "Book Now" : "View Details"}
+    </button>
+  </Link>
+</div>
+
+
                 </div>
               </div>
             ))}
@@ -207,7 +263,7 @@ const ViewProperties = () => {
         <div className="text-center mt-12 animate-fade-in">
           <p className="text-gray-600">
             Showing <span className="font-semibold text-blue-600">{filtered.length}</span> of{" "}
-            <span className="font-semibold text-blue-600">{properties.length}</span> properties
+            <span className="font-semibold text-blue-600">{filtered.length}</span> properties
           </p>
         </div>
       </div>

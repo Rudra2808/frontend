@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import axios from "axios"
+import FloatingInput from "./FloatingInput" // ✅ import it
 
 const AddPropertyForm = ({ listedBy }) => {
   const [form, setForm] = useState({
@@ -22,8 +23,8 @@ const AddPropertyForm = ({ listedBy }) => {
     avg_price: "",
     possession_status: "",
     configuration: "",
+    url: "",
   })
-  const [image, setImage] = useState(null)
   const [images, setImages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -36,7 +37,7 @@ const AddPropertyForm = ({ listedBy }) => {
   }
 
   const handleFileChange = (e) => {
-    setImages(e.target.files) // multiple files
+    setImages(e.target.files)
   }
 
   const handleSubmit = async (e) => {
@@ -57,11 +58,10 @@ const AddPropertyForm = ({ listedBy }) => {
     data.append("listed_by", listedBy)
 
     try {
-      await axios.post("https://backend-1-x1gx.onrender.com//api/properties/", data, {
+      await axios.post("http://localhost:8000//api/properties/", data, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       alert("Property added successfully!")
-      // Reset form
       setForm({
         title: "",
         description: "",
@@ -80,6 +80,7 @@ const AddPropertyForm = ({ listedBy }) => {
         avg_price: "",
         possession_status: "",
         configuration: "",
+        url: "",
       })
       setImages([])
     } catch (error) {
@@ -95,11 +96,11 @@ const AddPropertyForm = ({ listedBy }) => {
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen py-12 px-4 bg-gradient-to-br from-teal-50 to-white">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-gray-200/50 p-8 animate-slide-up">
+        <div className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-teal-200 p-8 animate-slide-up">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-500 to-teal-800 bg-clip-text text-transparent mb-2">
               Add New Property
             </h2>
             <p className="text-gray-600">Fill in the details to list your property</p>
@@ -108,29 +109,27 @@ const AddPropertyForm = ({ listedBy }) => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <span className="text-blue-600">📝</span>
+                <h3 className="text-lg font-semibold text-teal-800 mb-4 flex items-center gap-2">
+                  <span className="text-teal-500">📝</span>
                   Basic Information
                 </h3>
               </div>
 
-              <div className="relative">
-                <input
-                  name="title"
-                  value={form.title}
-                  onChange={handleChange}
-                  className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                  placeholder="Property Title"
-                  required
-                />
-              </div>
+              <FloatingInput
+                id="title"
+                name="title"
+                label="Title"
+                value={form.title}
+                onChange={handleChange}
+                required
+              />
 
               <div className="relative">
                 <select
                   name="property_type"
                   value={form.property_type}
                   onChange={handleChange}
-                  className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
+                  className="w-full p-4 border-2 border-teal-200 rounded-xl focus:border-teal-500 focus:outline-none transition-all duration-300 bg-white/60"
                   required
                 >
                   <option value="AP">🏢 Apartment</option>
@@ -145,149 +144,150 @@ const AddPropertyForm = ({ listedBy }) => {
                   name="description"
                   value={form.description}
                   onChange={handleChange}
-                  className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm h-32 resize-none"
+                  className="w-full p-4 border-2 border-teal-200 rounded-xl focus:border-teal-500 focus:outline-none transition-all duration-300 bg-white/60 h-32 resize-none"
                   placeholder="Property Description"
                   required
                 />
               </div>
 
-              <div className="relative">
-                <input
-                  type="number"
-                  name="price"
-                  value={form.price}
-                  onChange={handleChange}
-                  className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                  placeholder="Price (₹)"
-                  required
-                />
-              </div>
+              <FloatingInput
+                id="price"
+                name="price"
+                type="number"
+                label="Price (₹)"
+                value={form.price}
+                onChange={handleChange}
+                required
+              />
 
+              {/* Location Section */}
               <div className="md:col-span-2 mt-8">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <span className="text-green-600">📍</span>
+                <h3 className="text-lg font-semibold text-teal-800 mb-4 flex items-center gap-2">
+                  <span className="text-teal-500">📍</span>
                   Location Details
                 </h3>
               </div>
 
               <div className="md:col-span-2">
-                <input
+                <FloatingInput
+                  id="address"
                   name="address"
+                  label="Full Address"
                   value={form.address}
                   onChange={handleChange}
-                  className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                  placeholder="Full Address"
                   required
                 />
               </div>
 
-              <input
+              <FloatingInput
+                id="city"
                 name="city"
+                label="City"
                 value={form.city}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="City"
                 required
               />
 
-              <input
+              <FloatingInput
+                id="state"
                 name="state"
+                label="State"
                 value={form.state}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="State"
                 required
               />
 
-              <input
+              <FloatingInput
+                id="zip_code"
                 name="zip_code"
+                label="ZIP Code"
                 value={form.zip_code}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="ZIP Code"
                 required
               />
 
+              {/* Property Details */}
               <div className="md:col-span-2 mt-8">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <span className="text-purple-600">🏗️</span>
+                <h3 className="text-lg font-semibold text-teal-800 mb-4 flex items-center gap-2">
+                  <span className="text-teal-500">🏗️</span>
                   Property Details
                 </h3>
               </div>
 
-              <input
+              <FloatingInput
+                id="project_area"
                 name="project_area"
+                label="Project Area (e.g. 6.8 Acres)"
                 value={form.project_area}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="Project Area (e.g. 6.8 Acres)"
               />
 
-              <input
+              <FloatingInput
+                id="size"
                 name="size"
+                label="Size (e.g. 3812 sq.ft.)"
                 value={form.size}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="Size (e.g. 3812 sq.ft.)"
               />
 
-              <input
+              <FloatingInput
+                id="project_size"
                 name="project_size"
+                label="Project Size (e.g. 79 units)"
                 value={form.project_size}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="Project Size (e.g. 79 units)"
               />
 
-              <input
+              <FloatingInput
+                id="launch_date"
                 name="launch_date"
+                label="Launch Date (e.g. Apr, 2025)"
                 value={form.launch_date}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="Launch Date (e.g. Apr, 2025)"
               />
 
-              <input
+              <FloatingInput
+                id="avg_price"
                 name="avg_price"
+                label="Avg. Price (e.g. 7.58 K/sq.ft)"
                 value={form.avg_price}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="Avg. Price (e.g. 7.58 K/sq.ft)"
               />
 
-              <input
+              <FloatingInput
+                id="possession_status"
                 name="possession_status"
+                label="Possession Status (e.g. Under Construction)"
                 value={form.possession_status}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="Possession Status (e.g. Under Construction)"
               />
 
-              <input
+              <FloatingInput
+                id="configuration"
                 name="configuration"
+                label="Configuration (e.g. 4 BHK Villa)"
                 value={form.configuration}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="Configuration (e.g. 4 BHK Villa)"
               />
 
-              <input
+              <FloatingInput
+                id="url"
                 name="url"
+                label="Google Maps Embed URL"
                 value={form.url}
                 onChange={handleChange}
-                className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 bg-white/50 backdrop-blur-sm"
-                placeholder="Google Maps Embed URL"
               />
 
+              {/* File upload & checkboxes remain same */}
               <div className="md:col-span-2 mt-8">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <span className="text-orange-600">📸</span>
+                <h3 className="text-lg font-semibold text-teal-800 mb-4 flex items-center gap-2">
+                  <span className="text-teal-500">📸</span>
                   Images & Options
                 </h3>
               </div>
 
               <div className="md:col-span-2">
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-500 transition-colors duration-300">
+                <div className="border-2 border-dashed border-teal-300 rounded-xl p-8 text-center hover:border-teal-500 transition-colors duration-300">
                   <input
                     type="file"
                     multiple
@@ -311,9 +311,9 @@ const AddPropertyForm = ({ listedBy }) => {
                     name="is_available"
                     checked={form.is_available}
                     onChange={handleChange}
-                    className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                    className="w-5 h-5 text-teal-600 rounded focus:ring-teal-500"
                   />
-                  <span className="text-gray-700 group-hover:text-blue-600 transition-colors duration-300">
+                  <span className="text-gray-700 group-hover:text-teal-600 transition-colors duration-300">
                     Available for Sale
                   </span>
                 </label>
@@ -324,9 +324,9 @@ const AddPropertyForm = ({ listedBy }) => {
                     name="is_rental"
                     checked={form.is_rental}
                     onChange={handleChange}
-                    className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
+                    className="w-5 h-5 text-teal-600 rounded focus:ring-teal-500"
                   />
-                  <span className="text-gray-700 group-hover:text-blue-600 transition-colors duration-300">
+                  <span className="text-gray-700 group-hover:text-teal-600 transition-colors duration-300">
                     Rental Property
                   </span>
                 </label>
@@ -337,7 +337,7 @@ const AddPropertyForm = ({ listedBy }) => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-teal-500 to-teal-800 text-white py-4 rounded-xl font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>

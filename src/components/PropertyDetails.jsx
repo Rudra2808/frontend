@@ -16,7 +16,7 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://backend-1-x1gx.onrender.com//api/properties/${id}/`)
+      .get(`http://localhost:8000//api/properties/${id}/`)
       .then((res) => setProperty(res.data))
       .catch((err) => console.error(err))
   }, [id])
@@ -31,7 +31,7 @@ const PropertyDetails = () => {
       return
     }
     try {
-      await axios.post("https://backend-1-x1gx.onrender.com//api/callback/", {
+      await axios.post("http://localhost:8000//api/callback/", {
         buyer_name: callbackForm.buyer_name,
         email_id: callbackForm.email_id,
         phone_no: callbackForm.phone_no,
@@ -170,15 +170,23 @@ const PropertyDetails = () => {
                 <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/20 sticky top-8">
                   <button
                     onClick={() => setShowModal(true)}
-                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg mb-4"
+                    className="w-full bg-gradient-to-r from-teal-500 to-teal-800 
+             hover:from-teal-600 hover:to-teal-900 
+             text-white px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg mb-4"
                   >
                     📞 Request Callback
                   </button>
 
                   <Link
                     to="/viewproperties"
-                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg inline-block text-center"
-                  >
+                    className="w-full flex items-center justify-center gap-2 
+             bg-gradient-to-r from-teal-500 to-teal-800 
+             hover:from-teal-600 hover:to-teal-900 
+             text-white px-6 py-4 rounded-2xl 
+             font-semibold text-lg shadow-md hover:shadow-xl 
+             transition-all duration-300 transform 
+             hover:scale-105 active:scale-95 text-center"
+>
                     ← Back to Properties
                   </Link>
                 </div>
@@ -216,10 +224,16 @@ const PropertyDetails = () => {
       </div>
 
       {showModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 animate-fade-in">
-          <div className="bg-white/95 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20 animate-slide-up">
-            <h2 className="text-2xl font-bold mb-6 text-center text-gray-900">📞 Request a Callback</h2>
-
+       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 animate-fade-in">
+    <div className="bg-white/95 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20 animate-slide-up">
+            {/* Header */}
+      <div className="text-center mb-6">
+        <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-r from-green-500 to-blue-500 mb-4">
+          <span className="text-2xl">📞</span>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Request a Callback</h2>
+        <p className="text-gray-600 text-sm mt-1">We’ll reach out to you shortly</p>
+      </div>
             <div className="space-y-4">
               <div className="relative">
                 <input

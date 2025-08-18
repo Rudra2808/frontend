@@ -43,15 +43,19 @@ const Settings = () => {
               className="h-12 w-12"
             />
           </div>
-          <h2 className="text-2xl font-semibold">User Settings</h2>
-          <p className="text-gray-600 mt-1 text-sm">Manage your profile and preferences</p>
+          <h2 className="text-2xl font-semibold text-teal-800">User Settings</h2>
+          <p className="text-gray-600 mt-1 text-sm">
+            Manage your profile and preferences
+          </p>
         </div>
 
         {/* ✅ Settings Form */}
         <form onSubmit={handleSave} className="space-y-8">
           {/* Profile Info */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900">Profile Information</h3>
+            <h3 className="text-lg font-medium text-teal-700">
+              Profile Information
+            </h3>
             <FloatingInput
               id="fullName"
               name="fullName"
@@ -86,7 +90,7 @@ const Settings = () => {
 
           {/* Preferences */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900">Preferences</h3>
+            <h3 className="text-lg font-medium text-teal-700">Preferences</h3>
             {[
               {
                 key: "notifications",
@@ -116,7 +120,7 @@ const Settings = () => {
                   type="button"
                   onClick={() => handleToggle(pref.key)}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
-                    settings[pref.key] ? "bg-blue-600" : "bg-gray-300"
+                    settings[pref.key] ? "bg-teal-600" : "bg-gray-300"
                   }`}
                 >
                   <span
@@ -131,22 +135,22 @@ const Settings = () => {
 
           {/* Security */}
           <div className="space-y-4">
-            <h3 className="text-lg font-medium text-gray-900">Security</h3>
+            <h3 className="text-lg font-medium text-teal-700">Security</h3>
             <button
               type="button"
-              className="w-full text-left px-4 py-3 border rounded-md hover:bg-gray-50 transition"
+              className="w-full text-left px-4 py-3 border rounded-md hover:bg-teal-50 transition"
             >
               Change Password
             </button>
             <button
               type="button"
-              className="w-full text-left px-4 py-3 border rounded-md hover:bg-gray-50 transition"
+              className="w-full text-left px-4 py-3 border rounded-md hover:bg-teal-50 transition"
             >
               Two-Factor Authentication
             </button>
             <button
               type="button"
-              className="w-full text-left px-4 py-3 border rounded-md hover:bg-gray-50 transition"
+              className="w-full text-left px-4 py-3 border rounded-md hover:bg-teal-50 transition"
             >
               Privacy Settings
             </button>
@@ -155,7 +159,7 @@ const Settings = () => {
           {/* Save Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-3 rounded-md font-medium hover:bg-blue-700 transition"
+            className="w-full bg-teal-500 text-white py-3 rounded-md font-medium hover:bg-teal-800 transition"
           >
             Save Changes
           </button>

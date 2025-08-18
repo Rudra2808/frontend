@@ -35,7 +35,7 @@ export default function RentPredictor() {
   const handlePredict = async () => {
     setLoading(true)
     try {
-      const res = await axios.post("https://backend-1-x1gx.onrender.com//api/predict-rent/", {
+      const res = await axios.post("http://localhost:8000//api/predict-rent/", {
         area_sqft: Number.parseFloat(formData.area_sqft),
         bedrooms: Number.parseInt(formData.bedrooms),
         bathrooms: Number.parseInt(formData.bathrooms),
@@ -61,11 +61,11 @@ export default function RentPredictor() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-teal-100 py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 p-8 animate-fade-in">
+        <div className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 p-8 animate-fade-in">
           <div className="text-center mb-8">
-            <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-gradient-to-r from-green-500 to-blue-500 mb-4">
+            <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-gradient-to-r from-teal-500 to-teal-800 mb-4 shadow-lg">
               <span className="text-3xl">🏠</span>
             </div>
             <h2 className="text-4xl font-bold text-gray-900 mb-2">Property Rent Predictor</h2>
@@ -111,7 +111,7 @@ export default function RentPredictor() {
                         name={field}
                         value={formData[field]}
                         onChange={handleChange}
-                        className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
+                        className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm"
                         placeholder={`Enter ${config.label.toLowerCase()}`}
                       />
                     </div>
@@ -128,7 +128,7 @@ export default function RentPredictor() {
               className={`px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200 transform hover:scale-105 ${
                 loading
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white hover:shadow-lg"
+                  : "bg-gradient-to-r from-teal-500 to-teal-800 hover:from-teal-600 hover:to-teal-900 text-white shadow-md hover:shadow-xl"
               }`}
             >
               {loading ? (
@@ -143,14 +143,14 @@ export default function RentPredictor() {
           </div>
 
           {predictedRent !== null && (
-            <div className="bg-gradient-to-r from-green-100 to-blue-100 rounded-2xl p-8 text-center animate-slide-up border border-green-200">
+            <div className="bg-gradient-to-r from-teal-50 to-teal-100 rounded-2xl p-8 text-center animate-slide-up border border-teal-200">
               <div className="flex items-center justify-center mb-4">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-r from-green-500 to-blue-500 flex items-center justify-center">
+                <div className="h-16 w-16 rounded-full bg-gradient-to-r from-teal-500 to-teal-800 flex items-center justify-center shadow-md">
                   <span className="text-2xl">💰</span>
                 </div>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Predicted Monthly Rent</h3>
-              <p className="text-4xl font-bold text-green-600 mb-2">₹{predictedRent.toLocaleString()}</p>
+              <p className="text-4xl font-bold text-teal-700 mb-2">₹{predictedRent.toLocaleString()}</p>
               <p className="text-gray-600">Based on current market analysis</p>
             </div>
           )}

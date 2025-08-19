@@ -49,7 +49,7 @@ const About = () => {
               Building Dreams, <span className="text-teal-300">Creating Homes</span>
             </h1>
             <p className="text-xl mb-8 text-gray-100">
-              For over a decade, Prime Property Dealers has been transforming India's real estate landscape with innovation and trust.
+              For over a decade, HavenHunt Dealers has been transforming India's real estate landscape with innovation and trust.
             </p>
             <button className="bg-teal-400 hover:bg-teal-300 text-teal-900 font-semibold px-8 py-3 rounded-lg transition-all duration-300 transform hover:scale-105">
               Explore Our Projects

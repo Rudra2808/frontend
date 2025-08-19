@@ -35,7 +35,7 @@ export default function RentPredictor() {
   const handlePredict = async () => {
     setLoading(true)
     try {
-      const res = await axios.post("https://back1-i39m.onrender.com//api/predict-rent/", {
+      const res = await axios.post("https://one9back.onrender.com///api/predict-rent/", {
         area_sqft: Number.parseFloat(formData.area_sqft),
         bedrooms: Number.parseInt(formData.bedrooms),
         bathrooms: Number.parseInt(formData.bathrooms),

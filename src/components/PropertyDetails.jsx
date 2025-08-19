@@ -16,7 +16,7 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://back1-i39m.onrender.com//api/properties/${id}/`)
+      .get(`https://one9back.onrender.com///api/properties/${id}/`)
       .then((res) => setProperty(res.data))
       .catch((err) => console.error(err))
   }, [id])
@@ -31,7 +31,7 @@ const PropertyDetails = () => {
       return
     }
     try {
-      await axios.post("https://back1-i39m.onrender.com//api/callback/", {
+      await axios.post("https://one9back.onrender.com///api/callback/", {
         buyer_name: callbackForm.buyer_name,
         email_id: callbackForm.email_id,
         phone_no: callbackForm.phone_no,
@@ -61,7 +61,7 @@ const PropertyDetails = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8">
       <div className="max-w-6xl mx-auto p-6">
         <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 overflow-hidden animate-fade-in">
-          <div className="relative">
+          {/* <div className="relative">
             <div
               id="propertyCarousel"
               className="carousel slide h-96 overflow-hidden rounded-t-3xl"
@@ -103,7 +103,58 @@ const PropertyDetails = () => {
                 <span className="carousel-control-next-icon"></span>
               </button>
             </div>
+          </div> */}
+
+<div>
+  <div
+    id="propertyCarousel"
+    className="carousel slide"
+    data-bs-ride="carousel"
+  >
+    <div className="carousel-inner">
+      {property.images && property.images.length > 0 ? (
+        property.images.map((img, index) => (
+          <div
+            key={img.id || index}
+            className={`carousel-item ${index === 0 ? "active" : ""}`}
+          >
+            <img
+              src={img.image || "/placeholder.svg"}
+              className="d-block w-100"
+              alt={`Property ${index + 1}`}
+            />
           </div>
+        ))
+      ) : (
+        <div className="carousel-item active">
+          <p>No images available</p>
+        </div>
+      )}
+    </div>
+
+    {/* Prev Button */}
+    <button
+      className="carousel-control-prev"
+      type="button"
+      data-bs-target="#propertyCarousel"
+      data-bs-slide="prev"
+    >
+      <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span className="visually-hidden">Previous</span>
+    </button>
+
+    {/* Next Button */}
+    <button
+      className="carousel-control-next"
+      type="button"
+      data-bs-target="#propertyCarousel"
+      data-bs-slide="next"
+    >
+      <span className="carousel-control-next-icon" aria-hidden="true"></span>
+      <span className="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
 
           <div className="p-8">
             <div className="flex flex-col lg:flex-row gap-8">

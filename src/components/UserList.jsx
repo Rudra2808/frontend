@@ -10,7 +10,7 @@ const UserList = () => {
 
   useEffect(() => {
     axios
-      .get("https://back1-i39m.onrender.com//api/users/")
+      .get("https://one9back.onrender.com///api/users/")
       .then((response) => {
         setUsers(response.data)
         setLoading(false)

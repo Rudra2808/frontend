@@ -70,28 +70,24 @@ function App() {
             element={
               <div className="text-center py-20">
                 <div className="max-w-4xl mx-auto">
-                  <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-6 animate-fade-in">
-                    Welcome to Real Estate Pro
-                  </h1>
-                  <p className="text-xl text-gray-600 mb-8 animate-slide-up">
-                    Discover your dream property with our advanced search and prediction tools
-                  </p>
-                  {!loggedInUser && (
-                    <div className="flex gap-4 justify-center animate-slide-up">
-                      <Link
-                        to="/login"
-                        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300"
-                      >
-                        Get Started
-                      </Link>
-                      <Link
-                        to="/viewproperties"
-                        className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300"
-                      >
-                        Browse Properties
-                      </Link>
-                    </div>
-                  )}
+                  {!loggedInUser ? (
+  <div className="flex gap-4 justify-center animate-slide-up">
+    <Link
+      to="/login"
+      className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+    >
+      Get Started
+    </Link>
+    <Link
+      to="/viewproperties"
+      className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300"
+    >
+      Browse Properties
+    </Link>
+  </div>
+) : (
+          <Navigate to="/prop" replace /> 
+)}
                 </div>
               </div>
             }

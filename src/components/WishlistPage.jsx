@@ -11,7 +11,7 @@ const WishlistPage = () => {
   useEffect(() => {
     setIsLoading(true)
     axios
-      .get(`https://back1-i39m.onrender.com//api/wishlist/?username=${localStorage.getItem("username")}`)
+      .get(`https://one9back.onrender.com///api/wishlist/?username=${localStorage.getItem("username")}`)
       .then((res) => {
         setWishlist(res.data)
         setIsLoading(false)
@@ -24,7 +24,7 @@ const WishlistPage = () => {
 
   const removeFromWishlist = (itemId) => {
     axios
-      .delete(`https://back1-i39m.onrender.com//api/wishlist/remove/${itemId}/`)
+      .delete(`https://one9back.onrender.com///api/wishlist/remove/${itemId}/`)
       .then(() => {
         setWishlist(wishlist.filter((item) => item.id !== itemId))
       })
@@ -94,20 +94,7 @@ const WishlistPage = () => {
                 >
                   <div className="relative overflow-hidden">
                     
-                    {item.image ? (
-                      <img
-                        src={`https://back1-i39m.onrender.com/${item.image}`|| "/placeholder.svg"}
-                        alt={item.image}
-                        className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-48 bg-gradient-to-br from-teal-200 to-teal-400 flex items-center justify-center">
-                        <div className="text-center">
-                          <div className="text-4xl mb-2">🏠</div>
-                          <p className="text-gray-600 font-medium">No Image Available</p>
-                        </div>
-                      </div>
-                    )}
+                    
 
                     <div className="absolute top-4 left-4">
                       <span className="bg-teal-600 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
@@ -141,15 +128,9 @@ const WishlistPage = () => {
                     )}
 
                     <div className="flex gap-3 mt-4">
-                      <Link to={`/property/${item.property_id || item.id}`} className="flex-1">
-                        <button className="mt-2 text-teal-500 hover:text-teal-800 font-medium transition">
-                          <span className="text-lg">👁️</span>
-                          View Details →
-                        </button>
-                      </Link>
                       <button
                         onClick={() => removeFromWishlist(item.id)}
-                        className="bg-gradient-to-r from-red-500 to-pink-600 text-white px-4 py-3 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+                        className="bg-gradient-to-r from-teal-400 to-teal-800 text-white px-4 py-3 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
                       >
                         <span className="text-lg">💔</span>
                         Remove

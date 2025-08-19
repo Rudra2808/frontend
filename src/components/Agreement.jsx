@@ -61,7 +61,7 @@ export default function Agreement() {
     <div className="p-6 max-w-7xl mx-auto">
       {/* Top Title */}
       <div className="mb-6 border-b pb-4 text-center">
-        <img src="/assets/logo.png" alt="Logo" className="h-12 mx-auto" />
+        <img src="/assests/Havenhunt_Logo_Earth_Tones_and_Turquoise-removebg-preview.png" alt="Logo" className="h-12 mx-auto" />
         <h1 className="text-2xl font-bold">Rental Agreement</h1>
         <p className="text-gray-600">
           Fill out the form to generate your customized agreement

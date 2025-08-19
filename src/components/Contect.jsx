@@ -171,7 +171,7 @@ const Contact = () => {
           <div className="container mx-auto h-full flex flex-col justify-center px-6 lg:px-8">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-white leading-tight">
-                <span className="text-teal-300">Prime Property</span> Dealers
+                <span className="text-teal-300">HavenHunt</span> Dealers
               </h1>
               <p className="text-xl md:text-2xl text-gray-200 mb-8 max-w-2xl mx-auto">
                 Your trusted partner in finding the perfect home, office, or investment opportunity.
@@ -318,7 +318,7 @@ const Contact = () => {
                     href="mailto:hello123@gmail.com" 
                     className="text-lg hover:text-teal-300 transition-colors"
                   >
-                    hello123@gmail.com
+                    rudrapatel6808@gmail.com
                   </a>
                 </div>
               </div>
@@ -329,7 +329,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">Visit Us</h3>
-                  <p className="text-lg">123 Prime Street, Your City, India</p>
+                  <p className="text-lg">xyz</p>
                 </div>
               </div>
               

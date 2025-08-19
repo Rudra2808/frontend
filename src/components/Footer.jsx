@@ -8,7 +8,7 @@ const Footer = () => {
         
         {/* Brand / About */}
         <div>
-          <h2 className="text-2xl font-bold mb-3">Prime Property</h2>
+          <h2 className="text-2xl font-bold mb-3">HavenHunt</h2>
           <p className="text-gray-200 text-sm leading-relaxed">
             Building dreams, creating homes. Explore properties, manage your wishlist, 
             and find the perfect place to live or invest.
@@ -29,9 +29,9 @@ const Footer = () => {
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-semibold mb-3">Contact</h3>
-          <p className="text-gray-200 text-sm">📍 New Delhi, India</p>
-          <p className="text-gray-200 text-sm">📧 support@primeproperty.com</p>
-          <p className="text-gray-200 text-sm">📞 +91 98765 43210</p>
+          <p className="text-gray-200 text-sm">📍 Gujrat, India</p>
+          <p className="text-gray-200 text-sm">📧 rudrapatel6808@gmail.com</p>
+          <p className="text-gray-200 text-sm">📞 +91 8511380300</p>
         </div>
       </div>
 

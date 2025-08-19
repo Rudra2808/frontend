@@ -24,7 +24,7 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await axios.post("https://back1-i39m.onrender.com/api/register/", form)
+      await axios.post("https://one9back.onrender.com//api/register/", form)
       alert("Registration successful!")
       navigate("/login")
     } catch (error) {
@@ -46,7 +46,7 @@ const RegisterForm = () => {
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <img
-              src="/logo.svg" // 🔄 replace with your logo
+              src="/assests/Havenhunt_Logo_Earth_Tones_and_Turquoise-removebg-preview.png" // 🔄 replace with your logo
               alt="Logo"
               className="h-12 w-12"
             />

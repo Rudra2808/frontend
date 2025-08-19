@@ -16,7 +16,7 @@ const LoginForm = ({ setLoggedInUser }) => {
     setIsLoading(true)
 
     try {
-      const res = await axios.post("https://back1-i39m.onrender.com/api/login/", { username, password })
+      const res = await axios.post("https://one9back.onrender.com//api/login/", { username, password })
 
       localStorage.setItem("username", res.data.username)
       localStorage.setItem("loggedInUser", res.data.username)
@@ -42,7 +42,7 @@ const LoginForm = ({ setLoggedInUser }) => {
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <img
-              src="/logo.svg" // 🔄 replace with your logo path
+              src="/assests/Havenhunt_Logo_Earth_Tones_and_Turquoise-removebg-preview.png" // 🔄 replace with your logo path
               alt="Logo"
               className="h-12 w-12"
             />

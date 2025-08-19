@@ -38,7 +38,7 @@ const Settings = () => {
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <img
-              src="/logo.svg" // 🔄 replace with your logo
+              src="/assests/Havenhunt_Logo_Earth_Tones_and_Turquoise-removebg-preview.png" // 🔄 replace with your logo
               alt="Logo"
               className="h-12 w-12"
             />

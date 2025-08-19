@@ -1,16 +1,17 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { Link } from "react-router-dom"
 
 const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
   const [showMenu, setShowMenu] = useState(false)
    const [showPropertyDropdown, setShowPropertyDropdown] = useState(false)
      const [showPredictorDropdown, setShowPredictorDropdown] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const initials = userData ? `${userData.first_name?.[0] ?? ""}${userData.last_name?.[0] ?? ""}`.toUpperCase() : ""
   const propertyDropdownRef = useRef(null)
     const userRole = typeof window !== "undefined" ? localStorage.getItem("userRole") : null
-  // const [open, setOpen] = useState(false);
     const predictorDropdownRef = useRef(null)
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -31,18 +32,18 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
     <nav className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-200/50 shadow-sm">
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
-          {/* Logo */}
-          <img
-            src="/assests/Havenhunt_Logo_Earth_Tones_and_Turquoise-removebg-preview.png"
-            alt="HavenHunt Real Estate"
-            className="w-24 cursor-pointer"
-          />
-
+          <Link to="/prop">
+  <img
+    src="/assests/Havenhunt_Logo_Earth_Tones_and_Turquoise-removebg-preview.png"
+    alt="HavenHunt Real Estate"
+    className="w-24 cursor-pointer"
+  />
+</Link>        
           {/* Left menu */}
           {loggedInUser && (
             <div className="hidden md:flex gap-6 items-center relative text-teal-800">
               <a
-                href="/"
+                href="/prop"
                 className="text-teal-500 hover:text-teal-800 font-medium no-underline transition-colors duration-300"
               >
                 Home
@@ -103,17 +104,19 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
                 {showPredictorDropdown && (
                   <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-200 rounded-xl shadow-lg z-50">
                     <a
-                      href="/predict-price"
-                      className="block px-4 py-2 text-gray-700 hover:bg-teal-50"
-                    >
-                      📊 Price Predictor
-                    </a>
-                    <a
-                      href="/rent-price"
-                      className="block px-4 py-2 text-gray-700 hover:bg-teal-50"
-                    >
-                      🏠 Rent Predictor
-                    </a>
+                        href="/predict-price"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">📊</span>
+                        <span className="font-medium">Price Predictor</span>
+                      </a>
+                      <a
+                        href="/rent-price"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">🏠</span>
+                        <span className="font-medium">Rent Predictorr</span>
+                      </a>
                   </div>
                 )}</div>
               {/* Property Dropdown */}
@@ -221,6 +224,74 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
 
                     {/* Menu Items */}
                     <div className="p-2">
+                       <div className="lg:hidden border-t mt-2 pt-2">
+                        <a
+                        href="/prop"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">🏠</span>
+                        <span className="font-medium">Home</span>
+                      </a>
+                      <a
+                        href="/about"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">ℹ️</span>
+                        <span className="font-medium">About</span>
+                      </a>
+                      <a
+                        href="/contact"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">📞</span>
+                        <span className="font-medium">Contact</span>
+                      </a>
+                      <a
+                        href="/aggrement"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">📑</span>
+                        <span className="font-medium">Aggrement</span>
+                      </a>
+                      <a
+                        href="/prop"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">🏘</span>
+                        <span className="font-medium">Properties</span>
+                      </a><a
+                        href="/wishlist"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">❤️</span>
+                        <span className="font-medium">Wishlist</span>
+                      </a>
+            <button
+                        onClick={() => setShowPredictorDropdown(!showPredictorDropdown)}
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 rounded-xl text-red-600"
+                      >
+                        <span className="text-lg">🔮</span>
+                        <span className="font-medium">Predictors</span>
+                      </button>
+      {showPredictorDropdown && (
+        <div className="pl-6">
+          <a
+                        href="/predict-price"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">📊</span>
+                        <span className="font-medium">Price Predictor</span>
+                      </a>
+                      <a
+                        href="/rent-price"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">🏠</span>
+                        <span className="font-medium">Rent Predictorr</span>
+                      </a>
+        </div>
+      )}
+    </div>  
                       <a
                         href="/settings"
                         className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
@@ -228,20 +299,11 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
                         <span className="text-lg">⚙️</span>
                         <span className="font-medium">Settings</span>
                       </a>
-                      <a
-                        href="/viewproperties"
-                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
-                      >
-                        <span className="text-lg">🏠</span>
-                        <span className="font-medium">Browse Properties</span>
-                      </a>
-                      <a
-                        href="/predict-price"
-                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
-                      >
-                        <span className="text-lg">📊</span>
-                        <span className="font-medium">Price Predictor</span>
-                      </a>
+                
+
+
+
+                      
                        {userRole === "seller" && (
                 <>
                   <a
@@ -267,10 +329,14 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
                         <span className="text-lg">🚪</span>
                         <span className="font-medium">Sign out</span>
                       </button>
+                        
                     </div>
                   </div>
                 </>
               )}
+
+
+              
             </div>
           )}
         </div>

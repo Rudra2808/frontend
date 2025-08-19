@@ -5,8 +5,6 @@ import { Routes, Route, Navigate, useNavigate, Link } from "react-router-dom"
 import axios from "axios"
 
 import LogoutConfirmModal from "./LogoutConfirmModal"
-// import AppHeader from "./AppHeader"
-
 
 function PropertiesPage() {
   const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem("loggedInUser"))
@@ -56,7 +54,7 @@ useEffect(() => {
   useEffect(() => {
     setIsLoading(true)
     axios
-      .get("https://back1-i39m.onrender.com//api/properties/")
+      .get("https://one9back.onrender.com///api/properties/")
       .then((res) => {
         setProperties(res.data)
         setFiltered(res.data)
@@ -107,7 +105,7 @@ useEffect(() => {
 
   // const addToWishlist = (propertyId) => {
   //   axios
-  //     .post("https://back1-i39m.onrender.com//api/wishlist/add/", {
+  //     .post("https://one9back.onrender.com///api/wishlist/add/", {
   //       username: localStorage.getItem("username"),
   //       property_id: propertyId,
   //     })
@@ -123,7 +121,7 @@ useEffect(() => {
 useEffect(() => {
   if (loggedInUser) {
     axios
-      .get(`https://back1-i39m.onrender.com/api/wishlist/?username=${localStorage.getItem("username")}`)
+      .get(`https://one9back.onrender.com//api/wishlist/?username=${localStorage.getItem("username")}`)
       .then((res) => {
         console.log("Wishlist API response:", res.data)
         // force all ids to numbers
@@ -138,7 +136,7 @@ useEffect(() => {
 const toggleWishlist = (propertyId) => {
   if (wishlist.includes(propertyId)) {
     axios
-      .post("https://back1-i39m.onrender.com/api/wishlist/remove/", {
+      .post("https://one9back.onrender.com//api/wishlist/remove/", {
         username: localStorage.getItem("username"),
         property_id: propertyId,
       })
@@ -148,7 +146,7 @@ const toggleWishlist = (propertyId) => {
       .catch((err) => console.error(err))
   } else {
     axios
-      .post("https://back1-i39m.onrender.com/api/wishlist/add/", {
+      .post("https://one9back.onrender.com//api/wishlist/add/", {
         username: localStorage.getItem("username"),
         property_id: propertyId,
       })
@@ -163,7 +161,7 @@ const [wishlist, setWishlist] = useState([])
 useEffect(() => {
   if (loggedInUser) {
     axios
-      .get(`https://back1-i39m.onrender.com/api/wishlist/?username=${localStorage.getItem("username")}`)
+      .get(`https://one9back.onrender.com//api/wishlist/?username=${localStorage.getItem("username")}`)
       .then((res) => {
         const ids = res.data.map((item) => Number(item.id)) // only property IDs
         setWishlist(ids)
@@ -175,7 +173,7 @@ useEffect(() => {
 
 const addToWishlist = (propertyId) => {
   axios
-    .post("https://back1-i39m.onrender.com/api/wishlist/add/", {
+    .post("https://one9back.onrender.com//api/wishlist/add/", {
       username: localStorage.getItem("username"),
       property_id: propertyId,
     })
@@ -185,7 +183,7 @@ const addToWishlist = (propertyId) => {
 
 const removeFromWishlist = (propertyId) => {
   axios
-    .delete(`https://back1-i39m.onrender.com/api/wishlist/remove/${propertyId}/`, {
+    .delete(`https://one9back.onrender.com//api/wishlist/remove/${propertyId}/`, {
       data: { username: localStorage.getItem("username") },
     })
     .then(() => setWishlist((prev) => prev.filter((id) => id !== propertyId)))
@@ -286,7 +284,7 @@ const removeFromWishlist = (propertyId) => {
                   <div className="flex gap-2">
             
   <button onClick={() => addToWishlist(p.id)} className="p-2 text-xl">
-    ❤️ Wishlist
+    ❤️
   </button>
 
                     <Link to={`/property/${p.id}`} className="flex-1">

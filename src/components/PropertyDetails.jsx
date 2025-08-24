@@ -3,10 +3,13 @@
 import { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
 import axios from "axios"
+import { Heart } from "lucide-react"
 
 const PropertyDetails = () => {
   const { id } = useParams()
   const [property, setProperty] = useState(null)
+  const [wishlistLoading, setWishlistLoading] = useState(true)
+  const [isWishlisted, setIsWishlisted] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [callbackForm, setCallbackForm] = useState({
     buyer_name: "",
@@ -16,10 +19,58 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`https://one9back.onrender.com///api/properties/${id}/`)
+      .get(`http://localhost:8000///api/properties/${id}/`)
       .then((res) => setProperty(res.data))
       .catch((err) => console.error(err))
   }, [id])
+
+  // Load wishlist state for this property
+  useEffect(() => {
+    const username = localStorage.getItem("username")
+    if (!username || !property?.id) {
+      setWishlistLoading(false)
+      return
+    }
+    setWishlistLoading(true)
+    axios
+      .get(`http://localhost:8000//api/wishlist/?username=${username}`)
+      .then((res) => {
+        const exists = res.data.some((item) => Number(item.property_id) === Number(property.id))
+        setIsWishlisted(exists)
+      })
+      .catch((err) => console.error("Error loading wishlist:", err))
+      .finally(() => setWishlistLoading(false))
+  }, [property])
+
+  const toggleWishlist = async () => {
+    const username = localStorage.getItem("username")
+    if (!username) {
+      alert("Please login to manage your wishlist")
+      return
+    }
+    if (!property?.id) return
+
+    try {
+      if (isWishlisted) {
+        // Find wishlist item id and remove
+        const listRes = await axios.get(`http://localhost:8000//api/wishlist/?username=${username}`)
+        const item = listRes.data.find((it) => Number(it.property_id) === Number(property.id))
+        if (item) {
+          await axios.delete(`http://localhost:8000//api/wishlist/remove/${item.id}/`)
+          setIsWishlisted(false)
+        }
+      } else {
+        await axios.post("http://localhost:8000//api/wishlist/add/", {
+          username,
+          property_id: property.id,
+        })
+        setIsWishlisted(true)
+      }
+    } catch (e) {
+      console.error("Wishlist toggle failed:", e)
+      alert("Failed to update wishlist")
+    }
+  }
 
   const handleCallbackChange = (e) => {
     setCallbackForm({ ...callbackForm, [e.target.name]: e.target.value })
@@ -31,7 +82,7 @@ const PropertyDetails = () => {
       return
     }
     try {
-      await axios.post("https://one9back.onrender.com///api/callback/", {
+      await axios.post("http://localhost:8000///api/callback/", {
         buyer_name: callbackForm.buyer_name,
         email_id: callbackForm.email_id,
         phone_no: callbackForm.phone_no,
@@ -48,9 +99,9 @@ const PropertyDetails = () => {
 
   if (!property) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <div className="text-center animate-fade-in">
+          <div className="w-16 h-16 border-4 border-blue-600/30 border-top-color rounded-full animate-spin mx-auto mb-4" style={{ borderTopColor: '#2563eb', borderRadius: '9999px' }}></div>
           <p className="text-xl text-gray-600">Loading property details...</p>
         </div>
       </div>
@@ -58,102 +109,54 @@ const PropertyDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8">
-      <div className="max-w-6xl mx-auto p-6">
-        <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 overflow-hidden animate-fade-in">
-          {/* <div className="relative">
-            <div
-              id="propertyCarousel"
-              className="carousel slide h-96 overflow-hidden rounded-t-3xl"
-              data-bs-ride="carousel"
-            >
-              <div className="carousel-inner h-full">
-                {property.images && property.images.length > 0 ? (
-                  property.images.map((img, index) => (
-                    <div key={img.id} className={`carousel-item h-full ${index === 0 ? "active" : ""}`}>
-                      <img
-                        src={img.image || "/placeholder.svg"}
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                        alt={`Property ${index + 1}`}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="carousel-item active h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
-                    <p className="text-gray-500 text-xl">No images available</p>
-                  </div>
-                )}
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-10 px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-gray-200/50 overflow-hidden animate-fade-in">
+      
 
-              <button
-                className="carousel-control-prev absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-3 hover:bg-white/30 transition-all duration-200"
-                type="button"
-                data-bs-target="#propertyCarousel"
-                data-bs-slide="prev"
-              >
-                <span className="carousel-control-prev-icon"></span>
-              </button>
-              <button
-                className="carousel-control-next absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-3 hover:bg-white/30 transition-all duration-200"
-                type="button"
-                data-bs-target="#propertyCarousel"
-                data-bs-slide="next"
-              >
-                <span className="carousel-control-next-icon"></span>
-              </button>
-            </div>
-          </div> */}
-
-<div>
-  <div
-    id="propertyCarousel"
-    className="carousel slide"
-    data-bs-ride="carousel"
-  >
+<div className="relative">
+  <div id="propertyCarousel" className="carousel slide" data-bs-ride="carousel">
     <div className="carousel-inner">
       {property.images && property.images.length > 0 ? (
         property.images.map((img, index) => (
-          <div
-            key={img.id || index}
-            className={`carousel-item ${index === 0 ? "active" : ""}`}
-          >
-            <img
-              src={img.image || "/placeholder.svg"}
-              className="d-block w-100"
-              alt={`Property ${index + 1}`}
-            />
+          <div key={img.id || index} className={`carousel-item ${index === 0 ? "active" : ""}`}>
+            <img src={img.image || "/placeholder.svg"} className="d-block w-100" alt={`Property ${index + 1}`} />
           </div>
         ))
       ) : (
         <div className="carousel-item active">
-          <p>No images available</p>
+          <div className="w-full h-64 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-4xl mb-2">🏠</div>
+              <p className="text-gray-500 font-medium">No Image Available</p>
+            </div>
+          </div>
         </div>
       )}
     </div>
 
     {/* Prev Button */}
-    <button
-      className="carousel-control-prev"
-      type="button"
-      data-bs-target="#propertyCarousel"
-      data-bs-slide="prev"
-    >
+    <button className="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
       <span className="carousel-control-prev-icon" aria-hidden="true"></span>
       <span className="visually-hidden">Previous</span>
     </button>
 
     {/* Next Button */}
-    <button
-      className="carousel-control-next"
-      type="button"
-      data-bs-target="#propertyCarousel"
-      data-bs-slide="next"
-    >
+    <button className="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
       <span className="carousel-control-next-icon" aria-hidden="true"></span>
       <span className="visually-hidden">Next</span>
     </button>
   </div>
+
+  {/* Wishlist toggle */}
+  <button
+    onClick={toggleWishlist}
+    disabled={wishlistLoading}
+    title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+    className="absolute top-4 left-4 z-10 bg-white/80 backdrop-blur-md border border-gray-200/60 shadow-md rounded-full p-3 hover:scale-110 transition-transform"
+  >
+    <Heart className={`${isWishlisted ? 'fill-red-500 text-red-500' : 'text-gray-600'} w-6 h-6`} />
+  </button>
 </div>
 
           <div className="p-8">
@@ -168,11 +171,17 @@ const PropertyDetails = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  {property.city}, {property.state}
-                </p>
-                <p className="text-3xl font-bold text-green-600 mb-6">₹{property.price.toLocaleString()}</p>
+                  <Link to={property.url} className="no-underline text-black"> {property.city}, {property.state} </Link>
 
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 mb-6">
+                </p>
+                <div className="flex items-center gap-4 mb-6">
+                  <p className="text-3xl font-bold text-green-600">₹{property.price.toLocaleString()}</p>
+                  <span className={`px-4 py-2 rounded-full text-sm font-medium ${property.is_rental ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}`}>
+                    {property.is_rental ? "🏠 Rental Property" : "🏡 For Sale"}
+                  </span>
+                </div>
+
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-6 mb-6 animate-fade-in">
                   <p className="text-gray-700 leading-relaxed text-lg">{property.description}</p>
                 </div>
 
@@ -192,11 +201,7 @@ const PropertyDetails = () => {
                     { label: "Possession Status", value: property.possession_status, icon: "🔑" },
                     { label: "Configuration", value: property.configuration, icon: "🏠" },
                   ].map((item, index) => (
-                    <div
-                      key={index}
-                      className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-white/20 hover:shadow-lg transition-all duration-200 animate-fade-in"
-                      style={{ animationDelay: `${index * 0.1}s` }}
-                    >
+                    <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-gray-200/50 hover:shadow-lg transition-all duration-200 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
                       <div className="flex items-center">
                         <span className="text-2xl mr-3">{item.icon}</span>
                         <div>
@@ -207,36 +212,20 @@ const PropertyDetails = () => {
                     </div>
                   ))}
                 </div>
-
-                <div className="flex items-center space-x-2 mb-6">
-                  <span
-                    className={`px-4 py-2 rounded-full text-sm font-medium ${property.is_rental ? "bg-blue-100 text-blue-800" : "bg-green-100 text-green-800"}`}
-                  >
-                    {property.is_rental ? "🏠 Rental Property" : "🏡 For Sale"}
-                  </span>
-                </div>
               </div>
 
               <div className="lg:w-80">
-                <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-white/20 sticky top-8">
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200/50 sticky top-8 animate-slide-up">
                   <button
                     onClick={() => setShowModal(true)}
-                    className="w-full bg-gradient-to-r from-teal-500 to-teal-800 
-             hover:from-teal-600 hover:to-teal-900 
-             text-white px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg mb-4"
+                    className="w-full bg-gradient-to-r from-teal-500 to-teal-800 hover:from-teal-600 hover:to-teal-900 text-white px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg mb-4"
                   >
                     📞 Request Callback
                   </button>
 
                   <Link
-                    to="/viewproperties"
-                    className="w-full flex items-center justify-center gap-2 
-             bg-gradient-to-r from-teal-500 to-teal-800 
-             hover:from-teal-600 hover:to-teal-900 
-             text-white px-6 py-4 rounded-2xl 
-             font-semibold text-lg shadow-md hover:shadow-xl 
-             transition-all duration-300 transform 
-             hover:scale-105 active:scale-95 text-center"
+                    to="/prop"
+                    className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-4 rounded-2xl font-semibold text-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95 text-center no-underline"
 >
                     ← Back to Properties
                   </Link>
@@ -253,7 +242,7 @@ const PropertyDetails = () => {
 
 
 
-            {property.url && (
+            {/* {property.url && (
               <div className="mt-8">
                 <h3 className="text-2xl font-bold mb-4 text-gray-900">📍 Location</h3>
                 <div className="rounded-2xl overflow-hidden shadow-lg border border-white/20">
@@ -269,7 +258,7 @@ const PropertyDetails = () => {
                   ></iframe>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

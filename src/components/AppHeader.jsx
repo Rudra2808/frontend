@@ -32,7 +32,7 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
     <nav className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-200/50 shadow-sm">
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
-          <Link to="/prop">
+          <Link to="/">
   <img
     src="/assests/Havenhunt_Logo_Earth_Tones_and_Turquoise-removebg-preview.png"
     alt="HavenHunt Real Estate"
@@ -40,10 +40,9 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
   />
 </Link>        
           {/* Left menu */}
-          {loggedInUser && (
-            <div className="hidden md:flex gap-6 items-center relative text-teal-800">
+          <div className="hidden md:flex gap-6 items-center relative text-teal-800">
               <a
-                href="/prop"
+                href="/"
                 className="text-teal-500 hover:text-teal-800 font-medium no-underline transition-colors duration-300"
               >
                 Home
@@ -60,25 +59,36 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
               >
                 Contact
               </a>
-              <a
-                href="/aggrement"
-                className="text-teal-500 hover:text-teal-800 font-medium no-underline transition-colors duration-300"
-              >
-                aggrement
-              </a><a
-                href="/prop"
-                className="text-teal-500 hover:text-teal-800 font-medium no-underline transition-colors duration-300"
-              >
-                properties
-              </a>
-              <a
-                href="/wishlist"
-                className="text-teal-500 hover:text-teal-800 font-medium no-underline transition-colors duration-300"
-              >
-                wishlist
-              </a>
+              
+              {/* Additional menu items only for logged in users */}
+              {loggedInUser && (
+                <>
+                  <a
+                    href="/aggrement"
+                    className="text-teal-500 hover:text-teal-800 font-medium no-underline transition-colors duration-300"
+                  >
+                    aggrement
+                  </a>
+                  <a
+                    href="/prop"
+                    className="text-teal-500 hover:text-teal-800 font-medium no-underline transition-colors duration-300"
+                  >
+                    properties
+                  </a>
+                  <a
+                    href="/wishlist"
+                    className="text-teal-500 hover:text-teal-800 font-medium no-underline transition-colors duration-300"
+                  >
+                    wishlist
+                  </a>
+                  <a
+                    href="/my-agreements"
+                    className="text-teal-500 hover:text-teal-800 font-medium no-underline transition-colors duration-300"
+                  >
+                    My Agreements
+                  </a>
 
-<div className="relative" ref={predictorDropdownRef}>
+                  <div className="relative" ref={predictorDropdownRef}>
                 <button
                   onClick={() => setShowPredictorDropdown((prev) => !prev)}
                   className="flex items-center gap-1 hover:text-teal-800 text-teal-500 font-medium transition-colors duration-300"
@@ -118,58 +128,24 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
                         <span className="font-medium">Rent Predictorr</span>
                       </a>
                   </div>
-                )}</div>
-              {/* Property Dropdown */}
-              {/* <div className="relative" ref={propertyDropdownRef}>
-                <button
-                  onClick={() => setShowPropertyDropdown((prev) => !prev)}
-                  className="flex items-center gap-1 hover:text-teal-800 text-teal-500 font-medium transition-colors duration-300"
-                >
-                  Property
-                  <svg
-                    className={`w-4 h-4 mt-0.5 transition-transform duration-300 ${
-                      showPropertyDropdown ? "rotate-180" : ""
-                    }`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-
-                {showPropertyDropdown && (
-                  <div className="absolute top-full left-0 mt-2 w-40 bg-white border border-gray-200 rounded-xl shadow-lg z-50">
-                    <a href="/property/buy" className="block px-4 py-2 text-gray-700 hover:bg-teal-50">
-                      Buy
-                    </a>
-                    <a href="/property/sell" className="block px-4 py-2 text-gray-700 hover:bg-teal-50">
-                      Sell
-                    </a>
-                    <a href="/property/rent" className="block px-4 py-2 text-gray-700 hover:bg-teal-50">
-                      Rent
-                    </a>
-                  </div>
                 )}
-              </div> */}
-
-              {/* Add Property and Admin Panel buttons (only if seller role) */}
-             
+              </div>
+                </>
+              )}
             </div>
-          )}
 
           {/* Right menu */}
           {!loggedInUser ? (
             <div className="flex gap-3">
               <a
                 href="/login"
-                className="text-gray-700 hover:text-teal-600 font-medium px-4 py-2 rounded-lg hover:bg-teal-50 transition-all"
+                className="text-gray-700 no-underline hover:text-teal-600 font-medium px-4 py-2 rounded-lg hover:bg-teal-50 transition-all"
               >
                 Login
               </a>
               <a
                 href="/registration"
-                className="bg-gradient-to-r from-teal-600 to-teal-800 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+                className="bg-gradient-to-r no-underline from-teal-600 to-teal-800 text-white px-6 py-2 rounded-lg font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300"
               >
                 Register
               </a>
@@ -226,7 +202,7 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
                     <div className="p-2">
                        <div className="lg:hidden border-t mt-2 pt-2">
                         <a
-                        href="/prop"
+                        href="/"
                         className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
                       >
                         <span className="text-lg">🏠</span>
@@ -259,12 +235,19 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
                       >
                         <span className="text-lg">🏘</span>
                         <span className="font-medium">Properties</span>
-                      </a><a
+                      </a>                      <a
                         href="/wishlist"
                         className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
                       >
                         <span className="text-lg">❤️</span>
                         <span className="font-medium">Wishlist</span>
+                      </a>
+                      <a
+                        href="/my-agreements"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-teal-500 hover:text-teal-800 no-underline"
+                      >
+                        <span className="text-lg">📋</span>
+                        <span className="font-medium">My Agreements</span>
                       </a>
             <button
                         onClick={() => setShowPredictorDropdown(!showPredictorDropdown)}
@@ -323,7 +306,10 @@ const AppHeader = ({ loggedInUser, userData, handleLogout }) => {
                 </>
               )}
                       <button
-                        onClick={handleLogout}
+                        onClick={() => {
+                          handleLogout();
+                          setShowMenu(false);
+                        }}
                         className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 rounded-xl text-red-600"
                       >
                         <span className="text-lg">🚪</span>

@@ -5,11 +5,13 @@ import { useEffect, useState } from "react"
 const AdminPage = ({ username }) => {
   const [properties, setProperties] = useState([])
   const [callbacks, setCallbacks] = useState([])
+  const [editOpen, setEditOpen] = useState(false)
+  const [editing, setEditing] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [rentals, setRentals] = useState([])
   const handleRemoveRental = async (id) => {
   try {
-    const res = await fetch(`https://one9back.onrender.com//api/rentals/${id}/remove/`, {
+    const res = await fetch(`http://localhost:8000//api/rentals/${id}/remove/`, {
       method: "DELETE",
     });
 
@@ -30,7 +32,7 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
   formData.append("agreement", file)
 
   try {
-    const res = await fetch(`https://one9back.onrender.com//api/properties/${id}/mark-as-rented/`, {
+    const res = await fetch(`http://localhost:8000//api/properties/${id}/mark-as-rented/`, {
       method: "POST",
       body: formData,
     })
@@ -54,7 +56,7 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
   // ✅ Mark inquiry as called
   const handleMarkCalled = async (id) => {
     try {
-      const res = await fetch(`https://one9back.onrender.com//api/callbacks/${id}/mark-called/`, {
+      const res = await fetch(`http://localhost:8000//api/callbacks/${id}/mark-called/`, {
         method: "POST",
       })
 
@@ -72,7 +74,7 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
   // ✅ Remove property (set is_available = false)
   const handleRemoveProperty = async (id) => {
     try {
-      const res = await fetch(`https://one9back.onrender.com//api/properties/${id}/remove/`, {
+      const res = await fetch(`http://localhost:8000//api/properties/${id}/remove/`, {
         method: "POST",
       })
 
@@ -93,9 +95,9 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
       setIsLoading(true)
       try {
         const [propertiesRes, callbacksRes, rentalsRes] = await Promise.all([
-  fetch(`https://one9back.onrender.com//api/properties/seller/${username}/`),
-  fetch(`https://one9back.onrender.com//api/callbacks/seller/${username}/`),
-  fetch(`https://one9back.onrender.com//api/rentals/seller/${username}/`)
+  fetch(`http://localhost:8000//api/properties/seller/${username}/`),
+  fetch(`http://localhost:8000//api/callbacks/seller/${username}/`),
+  fetch(`http://localhost:8000//api/rentals/seller/${username}/`)
 ])
 
 if (rentalsRes.ok) {
@@ -219,7 +221,7 @@ if (rentalsRes.ok) {
                             {prop.is_available ? "✅ Available" : "❌ Sold"}
                           </span>
                         </td>
-                        <td className="py-4 px-6">
+                        <td className="py-4 px-6 flex gap-2">
                           <button
                             onClick={() => handleRemoveProperty(prop.id)}
                             disabled={!prop.is_available}
@@ -230,6 +232,12 @@ if (rentalsRes.ok) {
                             }`}
                           >
                             Remove
+                          </button>
+                          <button
+                            onClick={() => { setEditing(prop); setEditOpen(true) }}
+                            className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                          >
+                            Update
                           </button>
                         </td>
                       </tr>
@@ -470,8 +478,110 @@ if (rentalsRes.ok) {
           </div>
         </div>
       </div>
+      {editOpen && editing && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setEditOpen(false)} />
+          <div className="relative bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200 w-full max-w-3xl p-6 animate-slide-up max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">Update Property</h3>
+              <button onClick={() => setEditOpen(false)} className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200">✕</button>
+            </div>
+
+            <EditPropertyForm
+              initial={editing}
+              onCancel={() => setEditOpen(false)}
+              onSaved={(updated) => {
+                setProperties((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
+                setEditOpen(false)
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 export default AdminPage
+
+const EditPropertyForm = ({ initial, onCancel, onSaved }) => {
+  const [form, setForm] = useState({
+    title: initial.title || "",
+    description: initial.description || "",
+    price: initial.price || "",
+    address: initial.address || "",
+    city: initial.city || "",
+    state: initial.state || "",
+    zip_code: initial.zip_code || "",
+    property_type: initial.property_type || "AP",
+    is_rental: initial.is_rental || false,
+    is_available: typeof initial.is_available === 'boolean' ? initial.is_available : true,
+    project_area: initial.project_area || "",
+    size: initial.size || "",
+    project_size: initial.project_size || "",
+    launch_date: initial.launch_date || "",
+    avg_price: initial.avg_price || "",
+    possession_status: initial.possession_status || "",
+    configuration: initial.configuration || "",
+  })
+  const [saving, setSaving] = useState(false)
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setForm((f) => ({ ...f, [name]: type === 'checkbox' ? checked : value }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setSaving(true)
+    try {
+      const res = await fetch(`http://localhost:8000//api/properties/${initial.id}/`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error('Failed to update')
+      const updated = await res.json()
+      onSaved(updated)
+    } catch (e) {
+      alert('Update failed')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <input name="title" value={form.title} onChange={handleChange} placeholder="Title" className="border rounded-lg px-3 py-2" />
+      <input name="price" value={form.price} onChange={handleChange} placeholder="Price" className="border rounded-lg px-3 py-2" />
+      <input name="city" value={form.city} onChange={handleChange} placeholder="City" className="border rounded-lg px-3 py-2" />
+      <input name="state" value={form.state} onChange={handleChange} placeholder="State" className="border rounded-lg px-3 py-2" />
+      <input name="zip_code" value={form.zip_code} onChange={handleChange} placeholder="Zip Code" className="border rounded-lg px-3 py-2" />
+      <select name="property_type" value={form.property_type} onChange={handleChange} className="border rounded-lg px-3 py-2">
+        <option value="AP">Apartment</option>
+        <option value="HS">House</option>
+        <option value="VL">Villa</option>
+        <option value="CM">Commercial</option>
+      </select>
+      <label className="flex items-center gap-2 mt-1">
+        <input type="checkbox" name="is_rental" checked={form.is_rental} onChange={handleChange} /> For Rent
+      </label>
+      <label className="flex items-center gap-2 mt-1">
+        <input type="checkbox" name="is_available" checked={form.is_available ?? true} onChange={(e)=> setForm((f)=> ({...f, is_available: e.target.checked}))} /> Available
+      </label>
+      <input name="project_area" value={form.project_area} onChange={handleChange} placeholder="Project Area" className="border rounded-lg px-3 py-2" />
+      <input name="size" value={form.size} onChange={handleChange} placeholder="Size" className="border rounded-lg px-3 py-2" />
+      <input name="project_size" value={form.project_size} onChange={handleChange} placeholder="Project Size" className="border rounded-lg px-3 py-2" />
+      <input name="launch_date" value={form.launch_date} onChange={handleChange} placeholder="Launch Date" className="border rounded-lg px-3 py-2" />
+      <input name="avg_price" value={form.avg_price} onChange={handleChange} placeholder="Avg Price" className="border rounded-lg px-3 py-2" />
+      <input name="possession_status" value={form.possession_status} onChange={handleChange} placeholder="Possession Status" className="border rounded-lg px-3 py-2" />
+      <input name="configuration" value={form.configuration} onChange={handleChange} placeholder="Configuration" className="border rounded-lg px-3 py-2 md:col-span-2" />
+      <textarea name="address" value={form.address} onChange={handleChange} placeholder="Address" className="border rounded-lg px-3 py-2 md:col-span-2" />
+
+      <div className="md:col-span-2 flex justify-end gap-2 mt-2">
+        <button type="button" onClick={onCancel} className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">Cancel</button>
+        <button type="submit" disabled={saving} className="px-4 py-2 rounded-lg bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50">{saving ? 'Saving...' : 'Save Changes'}</button>
+      </div>
+    </form>
+  )
+}

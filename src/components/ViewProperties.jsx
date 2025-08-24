@@ -18,8 +18,8 @@ const [wishlist, setWishlist] = useState([])
 useEffect(() => {
   setIsLoading(true)
   Promise.all([
-    axios.get("https://one9back.onrender.com//api/properties/"),
-    axios.get(`https://one9back.onrender.com//api/wishlist/?username=${localStorage.getItem("username")}`)
+    axios.get("http://localhost:8000//api/properties/"),
+    axios.get(`http://localhost:8000//api/wishlist/?username=${localStorage.getItem("username")}`)
   ])
     .then(([propertiesRes, wishlistRes]) => {
       setProperties(propertiesRes.data)
@@ -47,7 +47,7 @@ setWishlist(wishlistIds);
 
 
   const addToWishlist = (propertyId) => {
-  axios.post("https://one9back.onrender.com//api/wishlist/add/", {
+  axios.post("http://localhost:8000//api/wishlist/add/", {
     username: localStorage.getItem("username"),
     property_id: propertyId,
   })
@@ -57,7 +57,7 @@ setWishlist(wishlistIds);
 
 
 const removeFromWishlist = (propertyId) => {
-  axios.delete(`https://one9back.onrender.com//api/wishlist/remove/${propertyId}/`, {
+  axios.delete(`http://localhost:8000//api/wishlist/remove/${propertyId}/`, {
     data: { username: localStorage.getItem("username") }
   })
   .then(() => setWishlist((prev) => prev.filter((id) => id !== propertyId)))
@@ -69,7 +69,7 @@ const removeFromWishlist = (propertyId) => {
   // useEffect(() => {
   //   setIsLoading(true)
   //   axios
-  //     .get("https://one9back.onrender.com///api/properties/")
+  //     .get("http://localhost:8000///api/properties/")
   //     .then((response) => {
   //       setProperties(response.data)
   //       setFiltered(response.data.filter(p => p.is_available)) // Only available properties
@@ -112,13 +112,14 @@ const removeFromWishlist = (propertyId) => {
   }
 
   return (
-    <div className="min-h-screen py-8 px-4">
+    <div className="min-h-screen py-8 px-4 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
             🏠 Available Properties
           </h2>
           <p className="text-gray-600 text-lg">Discover your perfect home from our curated collection</p>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto mt-4 rounded-full"></div>
         </div>
 
         <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200/50 p-6 mb-8 animate-slide-up">
@@ -174,7 +175,7 @@ const removeFromWishlist = (propertyId) => {
             {filtered.map((property, index) => (
               <div
                 key={property.id}
-                className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 animate-slide-up"
+                className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 animate-slide-up hover-lift"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="relative overflow-hidden">

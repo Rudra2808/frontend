@@ -14,14 +14,18 @@ import Settings from "./components/Settings"
 import AdminPage from "./components/AdminPage"
 import WishlistPage from "./components/WishlistPage"
 import PropertyDetails from "./components/PropertyDetails"
-import PricePredictor from "./components/PricePredictor" // ✅ Import Predictor
+import PricePredictor from "./components/PricePredictor" 
 import RentPredictor from "./components/RentPredictor"
 import PropertiesPage from "./components/PropertiesPage"
 import Aboutus from "./components/Aboutus"
 import Contect from "./components/Contect"
 import UserList from "./components/UserList"
 import Agreement from "./components/Agreement"
+import MyAgreements from "./components/MyAgreements"
+import ForgotPassword from "./components/ForgotPassword"
 import Footer from "./components/Footer"
+import LandingPage from "./components/LandingPage"
+import "./App.css"
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(localStorage.getItem("loggedInUser"))
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
@@ -53,7 +57,7 @@ function App() {
   const role = localStorage.getItem("userRole") // seller or buyer
   console.log(role)
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="relative min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-950 dark:to-black dark:text-gray-100">
     
       <AppHeader loggedInUser={loggedInUser} userData={userData} handleLogout={() => setShowLogoutConfirm(true)} />
 
@@ -65,33 +69,7 @@ function App() {
 
       <main className="container mx-auto px-4 py-8">
         <Routes>
-          <Route
-            path="/"
-            element={
-              <div className="text-center py-20">
-                <div className="max-w-4xl mx-auto">
-                  {!loggedInUser ? (
-  <div className="flex gap-4 justify-center animate-slide-up">
-    <Link
-      to="/login"
-      className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition-all duration-300"
-    >
-      Get Started
-    </Link>
-    <Link
-      to="/viewproperties"
-      className="border-2 border-blue-600 text-blue-600 px-8 py-3 rounded-full font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300"
-    >
-      Browse Properties
-    </Link>
-  </div>
-) : (
-          <Navigate to="/prop" replace /> 
-)}
-                </div>
-              </div>
-            }
-          />
+          <Route path="/" element={<LandingPage />} />
           <Route
   path="/login"
   element={
@@ -114,7 +92,7 @@ function App() {
   }
 />
 
-          <Route path="/prop" element={<PropertiesPage />} />
+          <Route path="/prop" element={<PrivateRoute><PropertiesPage /></PrivateRoute>} />
 
           <Route
             path="/viewproperties"
@@ -191,8 +169,17 @@ function App() {
           <Route path="*" element={<div className="text-center">404 - Page Not Found</div>} />
           <Route path="/about" element={<Aboutus/>} />
           <Route path="/contact" element={<Contect/>} />
-          <Route path="/userlist" element={<UserList/>} />
-          <Route path="/aggrement" element={<Agreement/>} />
+          {/* <Route path="/userlist" element={<UserList/>} /> */}
+          <Route path="/aggrement" element={<PrivateRoute><Agreement/></PrivateRoute>} />
+          <Route path="/forgot-password" element={<ForgotPassword/>} />
+          <Route
+            path="/my-agreements"
+            element={
+              <PrivateRoute>
+                <MyAgreements />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </main>
       <Footer/>

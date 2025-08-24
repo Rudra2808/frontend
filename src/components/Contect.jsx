@@ -184,7 +184,7 @@ const Contact = () => {
                   Get in Touch
                 </a>
                 <a
-                  href="#achievements"
+                  href=""
                   className="inline-flex items-center no-underline justify-center px-8 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-full transition-all duration-300 transform hover:scale-105 border border-white/20"
                 >
                   Learn More
@@ -301,7 +301,7 @@ const Contact = () => {
                   <h3 className="text-xl font-bold mb-2">Call Us</h3>
                   <a 
                     href="tel:3454343434" 
-                    className="text-lg hover:text-teal-300 transition-colors"
+                    className="text-lg hover:text-teal-300 text-white no-underline transition-colors"
                   >
                     +91 3454343434
                   </a>
@@ -316,7 +316,7 @@ const Contact = () => {
                   <h3 className="text-xl font-bold mb-2">Email Us</h3>
                   <a 
                     href="mailto:hello123@gmail.com" 
-                    className="text-lg hover:text-teal-300 transition-colors"
+                    className="text-lg hover:text-teal-300 text-white no-underline transition-colors"
                   >
                     rudrapatel6808@gmail.com
                   </a>
@@ -329,7 +329,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold mb-2">Visit Us</h3>
-                  <p className="text-lg">xyz</p>
+                  <p className="text-lg">Ahmedabad Gujrat</p>
                 </div>
               </div>
               

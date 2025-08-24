@@ -11,7 +11,7 @@ const WishlistPage = () => {
   useEffect(() => {
     setIsLoading(true)
     axios
-      .get(`https://one9back.onrender.com///api/wishlist/?username=${localStorage.getItem("username")}`)
+      .get(`http://localhost:8000///api/wishlist/?username=${localStorage.getItem("username")}`)
       .then((res) => {
         setWishlist(res.data)
         setIsLoading(false)
@@ -24,7 +24,7 @@ const WishlistPage = () => {
 
   const removeFromWishlist = (itemId) => {
     axios
-      .delete(`https://one9back.onrender.com///api/wishlist/remove/${itemId}/`)
+      .delete(`http://localhost:8000///api/wishlist/remove/${itemId}/`)
       .then(() => {
         setWishlist(wishlist.filter((item) => item.id !== itemId))
       })
@@ -43,14 +43,14 @@ const WishlistPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-teal-100 to-teal-200 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-teal-500 to-teal-800 bg-clip-text text-transparent mb-4">
+          <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-2">
             ❤️ Your Wishlist
           </h2>
           <p className="text-gray-600 text-lg">Your favorite properties saved for later</p>
-          <div className="w-24 h-1 bg-gradient-to-r from-teal-500 to-teal-800 mx-auto mt-4 rounded-full"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-indigo-600 mx-auto mt-4 rounded-full"></div>
         </div>
 
         {wishlist.length === 0 ? (
@@ -59,8 +59,8 @@ const WishlistPage = () => {
               <div className="text-8xl mb-6 animate-bounce">💔</div>
               <h3 className="text-2xl font-semibold text-gray-800 mb-4">Your wishlist is empty</h3>
               <p className="text-gray-600 mb-8">Start exploring properties and add your favorites here!</p>
-              <Link to="/viewproperties">
-                <button className="bg-gradient-to-r from-teal-500 to-teal-800 text-white px-8 py-4 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 mx-auto">
+              <Link to="/prop" className="no-underline">
+                <button className="bg-gradient-to-r from-teal-500  to-teal-800 text-white px-8 py-4 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 mx-auto">
                   <span className="text-lg">🏠</span>
                   Browse Properties
                 </button>
@@ -79,7 +79,7 @@ const WishlistPage = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-teal-600">{wishlist.length}</div>
+                  <div className="text-2xl font-bold text-blue-600">{wishlist.length}</div>
                   <div className="text-sm text-gray-500">Properties</div>
                 </div>
               </div>
@@ -89,48 +89,83 @@ const WishlistPage = () => {
               {wishlist.map((item, index) => (
                 <div
                   key={item.id}
-                  className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 animate-slide-up group"
+                  className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 animate-slide-up group hover-lift"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
+                  {/* Property Image */}
                   <div className="relative overflow-hidden">
+                    <img
+                      src={item.image || "/placeholder.svg"}
+                      alt={item.title}
+                      className="h-48 w-full object-cover hover:scale-105 transition duration-300"
+                    />
                     
-                    
+                    {/* Property Type Badge */}
+                    <span className="absolute top-2 left-2 bg-indigo-600 text-white px-2 py-1 rounded text-xs font-medium">
+                      {item.property_type === "AP"
+                        ? "Apartment"
+                        : item.property_type === "HS"
+                        ? "House"
+                        : item.property_type === "VL"
+                        ? "Villa"
+                        : item.property_type === "CM"
+                        ? "Commercial"
+                        : "Other"}
+                    </span>
 
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-teal-600 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                    {/* Rental Badge */}
+                    {item.is_rental && (
+                      <span className="absolute top-2 right-2 bg-teal-500 text-white px-2 py-1 rounded text-xs font-medium">
+                        Rent
+                      </span>
+                    )}
+
+                    {/* Wishlist Badge */}
+                    <div className="absolute bottom-2 left-2">
+                      <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
                         <span>❤️</span>
                         Wishlist
                       </span>
                     </div>
 
+                    {/* Remove Button */}
                     <button
                       onClick={() => removeFromWishlist(item.id)}
-                      className="absolute top-4 right-4 bg-red-500/80 backdrop-blur-sm text-white p-2 rounded-full hover:bg-red-600 transition-all duration-300 transform hover:scale-110 opacity-0 group-hover:opacity-100"
+                      className="absolute top-2 right-2 bg-red-500/80 backdrop-blur-sm text-white p-2 rounded-full hover:bg-red-600 transition-all duration-300 transform hover:scale-110 opacity-0 group-hover:opacity-100"
                       title="Remove from wishlist"
                     >
                       <span className="text-sm">🗑️</span>
                     </button>
                   </div>
 
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">{item.title}</h3>
+                  {/* Property Details */}
+                  <div className="p-6 space-y-3">
+                    <h3 className="text-xl font-bold text-gray-800 line-clamp-2">{item.title}</h3>
 
-                    <div className="flex items-center gap-2 text-gray-600 mb-3">
+                    <div className="flex items-center gap-2 text-gray-600">
                       <span className="text-lg">📍</span>
-                      <span className="line-clamp-1">{item.address}</span>
+                      <span className="line-clamp-1">{item.city}, {item.state}</span>
                     </div>
 
                     {item.price && (
-                      <div className="flex items-center gap-2 mb-4">
+                      <div className="flex items-center gap-2">
                         <span className="text-lg">💰</span>
                         <span className="text-2xl font-bold text-teal-600">₹{item.price.toLocaleString()}</span>
                       </div>
                     )}
 
+                    {/* Action Buttons */}
                     <div className="flex gap-3 mt-4">
+                      <Link to={`/property/${item.property_id}`} className="flex-1">
+                        <button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-3 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
+                          <span className="text-lg">👁️</span>
+                          {item.is_rental ? "Book Now →" : "View Details →"}
+                        </button>
+                      </Link>
+                      
                       <button
                         onClick={() => removeFromWishlist(item.id)}
-                        className="bg-gradient-to-r from-teal-400 to-teal-800 text-white px-4 py-3 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+                        className="bg-gradient-to-r from-red-400 to-red-600 text-white px-4 py-3 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
                       >
                         <span className="text-lg">💔</span>
                         Remove
@@ -144,8 +179,8 @@ const WishlistPage = () => {
             <div className="text-center mt-12 animate-fade-in">
               <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200/50 p-8">
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">Want to add more properties?</h3>
-                <Link to="/viewproperties">
-                  <button className="bg-gradient-to-r from-teal-500 to-teal-800 text-white px-8 py-4 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 mx-auto">
+                <Link to="/prop">
+                  <button className="bg-gradient-to-r from-teal-500 no-underline to-teal-800 text-white px-8 py-4 rounded-xl font-medium hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 mx-auto">
                     <span className="text-lg">🏠</span>
                     Browse More Properties
                   </button>

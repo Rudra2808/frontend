@@ -132,7 +132,7 @@ export default function Agreement() {
       const username = localStorage.getItem("loggedInUser");
       if (!username) return alert("Please login first");
       // create agreement record
-      const { data } = await axios.post("http://localhost:8000//api/agreements/create/", {
+      const { data } = await axios.post("https://one9back.onrender.com//api/agreements/create/", {
         username,
         form_data: formData,
         title: docTitle?.trim() || null,
@@ -148,7 +148,7 @@ export default function Agreement() {
       const form = new FormData();
       const filename = (docTitle?.trim() || "rental-agreement") + ".pdf";
       form.append("file", new File([blob], filename, { type: "application/pdf" }));
-      await axios.post(`http://localhost:8000//api/agreements/${newAgreementId}/upload-pdf/`, form, {
+      await axios.post(`https://one9back.onrender.com//api/agreements/${newAgreementId}/upload-pdf/`, form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -172,7 +172,7 @@ export default function Agreement() {
       try {
         const username = localStorage.getItem("loggedInUser");
         if (!username) return;
-        const { data } = await axios.get(`http://localhost:8000//api/agreements/user/${username}/`);
+        const { data } = await axios.get(`https://one9back.onrender.com//api/agreements/user/${username}/`);
         const previousCount = Array.isArray(data) ? data.length : 0;
         const base = 500;
         const discountPercent = Math.min(previousCount * 4, 40);

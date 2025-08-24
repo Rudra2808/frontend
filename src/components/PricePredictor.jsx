@@ -49,7 +49,7 @@ export default function PricePredictor() {
         market_trend_score: Number.parseFloat(formData.market_trend_score) || 0,
       }
 
-      const res = await axios.post("http://localhost:8000//api/predict-price/", payload)
+      const res = await axios.post("https://one9back.onrender.com//api/predict-price/", payload)
       setPredictedPrice(res.data.predicted_price)
     } catch (err) {
       console.error(err)

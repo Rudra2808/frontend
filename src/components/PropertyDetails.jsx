@@ -19,7 +19,7 @@ const PropertyDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000///api/properties/${id}/`)
+      .get(`https://one9back.onrender.com///api/properties/${id}/`)
       .then((res) => setProperty(res.data))
       .catch((err) => console.error(err))
   }, [id])
@@ -33,7 +33,7 @@ const PropertyDetails = () => {
     }
     setWishlistLoading(true)
     axios
-      .get(`http://localhost:8000//api/wishlist/?username=${username}`)
+      .get(`https://one9back.onrender.com//api/wishlist/?username=${username}`)
       .then((res) => {
         const exists = res.data.some((item) => Number(item.property_id) === Number(property.id))
         setIsWishlisted(exists)
@@ -53,14 +53,14 @@ const PropertyDetails = () => {
     try {
       if (isWishlisted) {
         // Find wishlist item id and remove
-        const listRes = await axios.get(`http://localhost:8000//api/wishlist/?username=${username}`)
+        const listRes = await axios.get(`https://one9back.onrender.com//api/wishlist/?username=${username}`)
         const item = listRes.data.find((it) => Number(it.property_id) === Number(property.id))
         if (item) {
-          await axios.delete(`http://localhost:8000//api/wishlist/remove/${item.id}/`)
+          await axios.delete(`https://one9back.onrender.com//api/wishlist/remove/${item.id}/`)
           setIsWishlisted(false)
         }
       } else {
-        await axios.post("http://localhost:8000//api/wishlist/add/", {
+        await axios.post("https://one9back.onrender.com//api/wishlist/add/", {
           username,
           property_id: property.id,
         })
@@ -82,7 +82,7 @@ const PropertyDetails = () => {
       return
     }
     try {
-      await axios.post("http://localhost:8000///api/callback/", {
+      await axios.post("https://one9back.onrender.com///api/callback/", {
         buyer_name: callbackForm.buyer_name,
         email_id: callbackForm.email_id,
         phone_no: callbackForm.phone_no,

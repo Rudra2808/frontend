@@ -79,7 +79,7 @@ const LandingPage = () => {
   useEffect(() => {
     setIsLoading(true)
     axios
-      .get("http://localhost:8000//api/properties/")
+      .get("https://one9back.onrender.com//api/properties/")
       .then((res) => {
         const available = (res.data || []).filter((p) => p.is_available)
         setFeatured(available.slice(0, 6))

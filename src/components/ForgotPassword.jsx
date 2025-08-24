@@ -72,7 +72,7 @@ const ForgotPassword = () => {
     setIsLoading(true)
     
     try {
-      await axios.post(`http://localhost:8000//api/users/${username}/forgot-password/`, {
+      await axios.post(`https://one9back.onrender.com//api/users/${username}/forgot-password/`, {
         email,
         new_password: newPassword,
       })

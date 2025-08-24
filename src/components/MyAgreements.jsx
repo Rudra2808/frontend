@@ -10,7 +10,7 @@ export default function MyAgreements() {
     if (!username) return;
     (async () => {
       try {
-        const { data } = await axios.get(`http://localhost:8000//api/agreements/user/${username}/`);
+        const { data } = await axios.get(`https://one9back.onrender.com//api/agreements/user/${username}/`);
         setItems(data);
       } catch (e) {
         // noop

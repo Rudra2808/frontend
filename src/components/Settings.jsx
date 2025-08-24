@@ -40,7 +40,7 @@ const Settings = () => {
 
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(`http://localhost:8000//api/users/${username}/`)
+        const res = await axios.get(`https://one9back.onrender.com//api/users/${username}/`)
         setProfile(res.data)
       } catch (e) {
         console.error(e)
@@ -67,7 +67,7 @@ const Settings = () => {
       const payload = { ...profile }
       delete payload.username
       delete payload.role
-      await axios.put(`http://localhost:8000//api/users/${profile.username}/`, payload)
+      await axios.put(`https://one9back.onrender.com//api/users/${profile.username}/`, payload)
       alert("Profile updated ✅")
     } catch (e) {
       console.error(e)
@@ -87,7 +87,7 @@ const Settings = () => {
     }
     setPwLoading(true)
     try {
-      await axios.post(`http://localhost:8000//api/users/${profile.username}/change-password/`, {
+      await axios.post(`https://one9back.onrender.com//api/users/${profile.username}/change-password/`, {
         old_password: passwords.old_password,
         new_password: passwords.new_password,
       })

@@ -88,7 +88,7 @@ const RegisterForm = () => {
     try {
       // Remove confirmPassword from the data sent to API
       const { confirmPassword, ...apiData } = formData
-      await axios.post("http://localhost:8000//api/register/", apiData)
+      await axios.post("https://one9back.onrender.com//api/register/", apiData)
       alert("Registration successful!")
       navigate("/login")
     } catch (error) {

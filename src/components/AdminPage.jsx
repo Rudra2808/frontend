@@ -11,7 +11,7 @@ const AdminPage = ({ username }) => {
   const [rentals, setRentals] = useState([])
   const handleRemoveRental = async (id) => {
   try {
-    const res = await fetch(`http://localhost:8000//api/rentals/${id}/remove/`, {
+    const res = await fetch(`https://one9back.onrender.com//api/rentals/${id}/remove/`, {
       method: "DELETE",
     });
 
@@ -32,7 +32,7 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
   formData.append("agreement", file)
 
   try {
-    const res = await fetch(`http://localhost:8000//api/properties/${id}/mark-as-rented/`, {
+    const res = await fetch(`https://one9back.onrender.com//api/properties/${id}/mark-as-rented/`, {
       method: "POST",
       body: formData,
     })
@@ -56,7 +56,7 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
   // ✅ Mark inquiry as called
   const handleMarkCalled = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8000//api/callbacks/${id}/mark-called/`, {
+      const res = await fetch(`https://one9back.onrender.com//api/callbacks/${id}/mark-called/`, {
         method: "POST",
       })
 
@@ -74,7 +74,7 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
   // ✅ Remove property (set is_available = false)
   const handleRemoveProperty = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8000//api/properties/${id}/remove/`, {
+      const res = await fetch(`https://one9back.onrender.com//api/properties/${id}/remove/`, {
         method: "POST",
       })
 
@@ -95,9 +95,9 @@ const rentedProperties = properties.filter((p) => p.is_rental === true)
       setIsLoading(true)
       try {
         const [propertiesRes, callbacksRes, rentalsRes] = await Promise.all([
-  fetch(`http://localhost:8000//api/properties/seller/${username}/`),
-  fetch(`http://localhost:8000//api/callbacks/seller/${username}/`),
-  fetch(`http://localhost:8000//api/rentals/seller/${username}/`)
+  fetch(`https://one9back.onrender.com//api/properties/seller/${username}/`),
+  fetch(`https://one9back.onrender.com//api/callbacks/seller/${username}/`),
+  fetch(`https://one9back.onrender.com//api/rentals/seller/${username}/`)
 ])
 
 if (rentalsRes.ok) {
@@ -535,7 +535,7 @@ const EditPropertyForm = ({ initial, onCancel, onSaved }) => {
     e.preventDefault()
     setSaving(true)
     try {
-      const res = await fetch(`http://localhost:8000//api/properties/${initial.id}/`, {
+      const res = await fetch(`https://one9back.onrender.com//api/properties/${initial.id}/`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),

@@ -68,7 +68,7 @@ function PropertiesPage() {
   useEffect(() => {
     setIsLoading(true)
     axios
-      .get("http://localhost:8000///api/properties/")
+      .get("https://one9back.onrender.com///api/properties/")
       .then((res) => {
         const availableProps = res.data.filter((p) => p.is_available)
         setProperties(availableProps)
@@ -84,7 +84,7 @@ function PropertiesPage() {
       setWishlistLoading(true)
       const username = localStorage.getItem("username")
       axios
-        .get(`http://localhost:8000//api/wishlist/?username=${username}`)
+        .get(`https://one9back.onrender.com//api/wishlist/?username=${username}`)
         .then((res) => {
           // Extract property IDs from wishlist items
           const propertyIds = res.data.map((item) => Number(item.property_id))
@@ -151,11 +151,11 @@ function PropertiesPage() {
       // Remove from wishlist
       try {
         // Find the wishlist item ID first
-        const wishlistResponse = await axios.get(`http://localhost:8000//api/wishlist/?username=${username}`)
+        const wishlistResponse = await axios.get(`https://one9back.onrender.com//api/wishlist/?username=${username}`)
         const wishlistItem = wishlistResponse.data.find(item => Number(item.property_id) === propertyId)
         
         if (wishlistItem) {
-          await axios.delete(`http://localhost:8000//api/wishlist/remove/${wishlistItem.id}/`)
+          await axios.delete(`https://one9back.onrender.com//api/wishlist/remove/${wishlistItem.id}/`)
           setWishlist(prev => prev.filter(id => id !== propertyId))
           console.log("Removed from wishlist:", propertyId)
         }
@@ -166,7 +166,7 @@ function PropertiesPage() {
     } else {
       // Add to wishlist
       try {
-        await axios.post("http://localhost:8000//api/wishlist/add/", {
+        await axios.post("https://one9back.onrender.com//api/wishlist/add/", {
           username: username,
           property_id: propertyId,
         })
